@@ -1,10 +1,5 @@
 @charset "UTF-8";
 /* =================================================================== 
- * Monica Main Stylesheet
- * Template Ver. 1.0.0
- * 12-13-2022
- * ------------------------------------------------------------------
- *
  * TOC:
  * # SETTINGS
  *		## fonts
@@ -118,7 +113,8 @@
 	--color-1-darker               : hsla(35, 87%, 29%, 1);
 	--color-1-darkest              : hsla(35, 87%, 10%, 1);
 
-	--color-2-lightest             : hsla(127, 8%, 55%, 1);
+	--color-2-lightest: hsla(127, 0%, 100%, 1);
+	/* --color-2-lightest             : hsla(127, 8%, 55%, 1); */
 	--color-2-lighter              : hsla(127, 8%, 42%, 1);
 	--color-2-light                : hsla(127, 8%, 32%, 1);
 	/* --color-2-dark                 : hsla(127, 8%, 14%, 1); */
@@ -1772,25 +1768,6 @@ img,
 
 
 
-/* ===================================================================
- * # PRELOADER
- * 
- * 
- * -------------------------------------------------------------------
- * - markup:
- *
- * <div id="preloader">
- *     <div id="loader" class="dots-fade">
- *         <div></div>
- *         <div></div>
- *         <div></div>
- *     </div>
- * </div>
- *
- * - loader class:
- * <dots-fade | dots-jump | dots-pulse>
- *
- * ------------------------------------------------------------------- */
 #preloader {
 	position       : fixed;
 	display        : flex;
@@ -3584,7 +3561,7 @@ td:last-child {
 	--content-min-height    : calc(var(--vspace-1) * 27);
 	z-index                 : 2;
 	background-color        : var(--color-2-dark);
-	background              : linear-gradient(20deg, hsl(130deg, 8%, 14%) 40%, hsl(0deg, 0%, 13%) 100%);
+	background              : linear-gradient(20deg, hsl(0, 0%, 0%) 40%, hsl(0, 0%, 53%) 100%);
 	width                   : 100%;
 	height                  : max(var(--content-min-height), 100vh);
 	overflow                : hidden;

@@ -170,7 +170,7 @@
    */
 	--color-text                   : var(--color-gray-18);
 	/* --color-text: #010101; */
-	--color-text-dark              : #181818;
+	--color-text-dark              : #ffffff;
 	--color-text-light             : var(--color-gray-14);
 	--color-placeholder            : var(--color-gray-12);
 
@@ -3168,7 +3168,7 @@ td:last-child {
  * ------------------------------------------------------------------- */
 .s-header {
 	--header-height: 80px;
-	--logo-width   : 9.6rem;
+	--logo-width   : 27rem;
 	--box-shadow   : 0 1px 1px rgba(0, 0, 0, 0.02),
 		             0 2px 2px rgba(0, 0, 0, 0.02),
 		             0 4px 4px rgba(0, 0, 0, 0.02),
@@ -3349,7 +3349,7 @@ td:last-child {
  * ------------------------------------------------------------------- */
 @media screen and (max-width: 900px) {
 	.s-header {
-		--logo-width: 10rem;
+		--logo-width: 27rem;
 		top         : var(--vspace-0_25);
 	}
 
@@ -3999,6 +3999,8 @@ td:last-child {
 .s-expertise {
 	padding-top   : var(--vspace-6);
 	padding-bottom: var(--vspace-5);
+	background-color: var(--color-2-dark);
+	color           : var(--color-3);
 }
 
 .s-expertise__content-main {
@@ -4026,6 +4028,8 @@ td:last-child {
 	padding-top     : var(--vspace-6);
 	padding-bottom  : var(--vspace-4);
 	background-color: var(--color-3);
+	background-color: var(--color-2-dark);
+	color           : var(--color-3);
 }
 
 .s-clients__content-block:first-child {

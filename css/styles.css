@@ -3349,7 +3349,7 @@ td:last-child {
  * ------------------------------------------------------------------- */
 @media screen and (max-width: 900px) {
 	.s-header {
-		--logo-width: 27rem;
+		--logo-width: 37rem;
 		top         : var(--vspace-0_25);
 	}
 
@@ -4014,6 +4014,8 @@ td:last-child {
 @media screen and (max-width: 800px) {
 	.s-expertise {
 		padding-top: var(--vspace-5);
+		background-color: var(--color-2-dark);
+		color           : var(--color-3);
 	}
 }
 
@@ -4100,6 +4102,8 @@ td:last-child {
 @media screen and (max-width: 1200px) {
 	.s-clients__content-block:first-child .grid-section-split__primary {
 		margin-top: 0;
+		background-color: var(--color-2-dark);
+		color           : var(--color-3);
 	}
 
 	.clients-list__item {

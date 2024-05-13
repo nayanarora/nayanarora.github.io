@@ -106,7 +106,8 @@
    */
 	--color-1: hsla(35, 87%, 49%, 1);
 	--color-2: hsla(127, 8%, 22%, 1);
-	--color-3: hsla(39, 93%, 95%, 1);
+	/* --color-3: hsla(39, 93%, 95%, 1); */
+	--color-3: hsla(39, 33.22%, 99.25%, 1);
 
   /* theme color variations
    */
@@ -120,7 +121,8 @@
 	--color-2-lightest             : hsla(127, 8%, 55%, 1);
 	--color-2-lighter              : hsla(127, 8%, 42%, 1);
 	--color-2-light                : hsla(127, 8%, 32%, 1);
-	--color-2-dark                 : hsla(127, 8%, 14%, 1);
+	/* --color-2-dark                 : hsla(127, 8%, 14%, 1); */
+	--color-2-dark				   : hsla(127, 0%, 0%, 1);
 	--color-2-darker               : hsla(127, 8%, 2%, 1);
 	
 	--color-3-light                : hsla(39, 93%, 100%, 1);
@@ -147,7 +149,8 @@
    */
 	--color-black                  : #000000;
 	--color-gray-19                : #121212;
-	--color-gray-18                : #242525;
+	/* --color-gray-18                : #242525; */
+	--color-gray-18: #030303;
 	--color-gray-17                : #363737;
 	--color-gray-16                : #484949;
 	--color-gray-15                : #5b5c5c;
@@ -170,6 +173,7 @@
   /* text
    */
 	--color-text                   : var(--color-gray-18);
+	/* --color-text: #010101; */
 	--color-text-dark              : #181818;
 	--color-text-light             : var(--color-gray-14);
 	--color-placeholder            : var(--color-gray-12);

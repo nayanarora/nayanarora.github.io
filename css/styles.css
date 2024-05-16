@@ -3352,7 +3352,7 @@ td:last-child {
  * ------------------------------------------------------------------- */
 @media screen and (max-width: 900px) {
 	.s-header {
-		--logo-width: 20rem;
+		--logo-width: 29rem;
 		top         : var(--vspace-0_25);
 	}
 

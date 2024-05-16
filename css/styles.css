@@ -1243,7 +1243,8 @@ h6,
 .h6 {
 	font-family           : var(--font-2);
 	font-weight           : 400;
-	color                 : var(--color-text-dark);
+	/* color                 : var(--color-text-dark); */
+	color                 : var(--color-1-lightest)
 	font-variant-ligatures: common-ligatures;
 	text-rendering        : optimizeLegibility;
 }
@@ -2754,7 +2755,8 @@ td:last-child {
 	font-size     : var(--text-display-2);
 	line-height   : 1.0606;
 	letter-spacing: -0.012em;
-	color         : var(--color-text-dark);
+	/* color         : var(--color-text-dark); */
+	color         : var(--color-1-lightest);
 	margin-top    : 0;
 	margin-bottom : var(--vspace-1_5);
 }
@@ -2778,7 +2780,7 @@ td:last-child {
 }
 
 .show-ctr .list-items__item-header::before {
-	content          : counter(ctr, decimal-leading-zero) ".";
+	/* content          : counter(ctr, decimal-leading-zero) "."; */
 	counter-increment: ctr;
 	display          : block;
 	font-family      : var(--font-1);
@@ -2796,7 +2798,8 @@ td:last-child {
 
 .list-items__item-title,
 .list-items__item-small-title {
-	color     : var(--color-text-dark);
+	/* color     : var(--color-text-dark); */
+	color     : #ec9300;
 	margin-top: 0;
 }
 
@@ -3485,6 +3488,7 @@ td:last-child {
 	padding-top     : var(--vspace-6);
 	padding-bottom  : var(--vspace-3);
 	background-color: var(--color-2-dark);
+	background      : linear-gradient(19deg, hsl(0, 0%, 0%) 34.87%, hsl(0, 0%, 53%));
 	text-align      : center;
 }
 
@@ -3492,7 +3496,8 @@ td:last-child {
 	margin-top : 0;
 	font-size  : clamp(5.2rem, 10vw, var(--text-huge-1));
 	line-height: 1.0465;
-	color      : var(--color-3);
+	/* color      : var(--color-3); */
+	color      : var(--color-1-lightest);
 }
 
 .s-pageheader .page-title__small-type {
@@ -3503,6 +3508,8 @@ td:last-child {
 .s-pagecontent {
 	padding-top   : var(--vspace-4);
 	padding-bottom: var(--vspace-3);
+	background-color: var(--color-2-dark);
+	color           : var(--color-3);
 }
 
 .s-pagecontent .pageintro {
@@ -3575,7 +3582,8 @@ td:last-child {
 	z-index       : 2;
 	align-items   : center;
 	height        : 100%;
-	color         : var(--color-3);
+	/* color         : var(--color-3); */
+	color      : var(--color-1-lightest);
 	padding-top   : var(--content-padding-top);
 	padding-bottom: var(--content-padding-bottom);
 	position      : relative;
@@ -3595,7 +3603,8 @@ td:last-child {
 .s-intro__content-pretitle {
 	margin-bottom: var(--vspace-0_125);
 	padding-left : 10rem;
-	color        : var(--color-3);
+	/* color        : var(--color-3); */
+	color      : var(--color-1-lightest);
 	transform    : translate(-9.6rem, 0);
 	position     : relative;
 }
@@ -3616,7 +3625,8 @@ td:last-child {
 	line-height  : 1;
 	margin-top   : 0;
 	margin-bottom: var(--vspace-1_25);
-	color        : var(--color-3);
+	/* color        : var(--color-3); */
+	color      : var(--color-1-lightest);
 }
 
 .s-intro__content-media {
@@ -3938,7 +3948,8 @@ td:last-child {
 }
 
 .s-about .text-display-title {
-	color: var(--color-3);
+	/* color: var(--color-3); */
+	color      : var(--color-1-lightest);
 }
 
 .s-about__content-imgbg {
@@ -4152,7 +4163,8 @@ td:last-child {
 }
 
 .s-cta .text-display-title {
-	color: var(--color-3);
+	/* color: var(--color-3); */
+	color      : var(--color-1-lightest);
 }
 
 .s-cta .attention-getter,
@@ -4210,7 +4222,8 @@ td:last-child {
 
 .s-journal .text-display-title,
 .s-journal h3 {
-	color: var(--color-3);
+	/* color: var(--color-3); */
+	color      : var(--color-1-lightest);
 }
 
 .s-journal .text-pretitle,
@@ -4238,13 +4251,13 @@ td:last-child {
 	font-size       : calc(var(--text-size) * 0.95);
 	font-weight     : 300;
 	color           : rgba(255, 255, 255, 0.6);
-	background-color: #181818;
+	background-color: #000000;
 	padding-top     : var(--vspace-3);
 	padding-bottom  : var(--vspace-3);
 }
 
 .s-footer a {
-	color: var(--color-1);
+	color: rgba(255, 255, 255, 0.6);
 }
 
 .s-footer a:focus,
@@ -4253,7 +4266,7 @@ td:last-child {
 }
 
 .s-footer h3 {
-	color     : var(--color-3);
+	color     : hsla(39, 100%, 76.5%, 1);
 	margin-top: 0;
 }
 
@@ -4700,7 +4713,7 @@ td:last-child {
 }
 
 .contact-block a {
-	color: var(--color-text);
+	color: var(--color-btn-primary-hover);
 }
 
 .contact-block a:focus,
@@ -4718,7 +4731,7 @@ td:last-child {
 }
 
 .contact-social svg path {
-	fill: var(--color-text);
+	fill: #fefefe;
 }
 
 .contact-list {

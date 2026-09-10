@@ -6,7 +6,7 @@
 > LinkedIn: https://www.linkedin.com/in/nayanarora
 > GitHub: https://github.com/nayanarora
 
-Nayan Arora is an Applied AI Engineer based in Canberra. He designs applied intelligence for civic systems, climate time series, and spatial operations. He is not the nephrologist at OHSU, and not the Bengaluru founder of VoxGenie.
+Nayan Arora is an Applied AI Engineer based in Canberra. He works on civic rates modelling, climate time series, and spatial systems. He is not the nephrologist at OHSU, and not the Bengaluru founder of VoxGenie.
 
 ## Identity
 

@@ -102,7 +102,7 @@ button { font: inherit; color: inherit; }
 }
 
 .dock {
-  width: min(420px, calc(100% - 32px));
+  width: min(460px, calc(100% - 32px));
   margin: 88px 16px 48px;
   padding: 22px 22px 26px;
   background: var(--panel);
@@ -172,12 +172,30 @@ button { font: inherit; color: inherit; }
   margin: 0 0 14px;
 }
 
-.pic {
+.still {
   width: 100%;
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 16 / 10;
   object-fit: cover;
-  border-radius: 10px;
-  margin: 8px 0 16px;
+  border-radius: 8px;
+  margin: 0 0 10px;
+}
+
+.still--lead {
+  margin: 4px 0 16px;
+}
+
+.mosaic {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  margin: 4px 0 16px;
+}
+
+.mosaic img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 8px;
 }
 
 .mail {

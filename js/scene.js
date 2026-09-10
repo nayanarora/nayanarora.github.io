@@ -88,8 +88,8 @@ const coreFrag = /* glsl */ `
   void main() {
     float fresnel = pow(1.0 - max(dot(normalize(vNormal), normalize(vView)), 0.0), 2.6);
     vec3 base = mix(uColorA, uColorB, uMix);
-    vec3 col = mix(base * 0.12, vec3(0.78, 0.86, 0.96), fresnel * 0.85);
-    gl_FragColor = vec4(col, 0.88);
+    vec3 col = mix(base * 0.18, vec3(0.9, 0.94, 1.0), fresnel);
+    gl_FragColor = vec4(col, 0.92);
   }
 `;
 
@@ -98,8 +98,8 @@ export class World {
     this.canvas = canvas;
     this.reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     this.mobile = window.matchMedia("(max-width: 900px)").matches;
-    this.quiet = document.body.classList.contains("quiet");
-    this.count = this.mobile ? 1800 : this.quiet ? 3200 : 4800;
+    this.quiet = false;
+    this.count = this.mobile ? 2200 : 5600;
     this.progress = 0;
     this.pointer = new THREE.Vector2(0, 0);
     this.clock = new THREE.Clock();
@@ -124,7 +124,7 @@ export class World {
 
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 80);
-    this.camera.position.set(0, 0.15, this.quiet ? 7.4 : 6.2);
+    this.camera.position.set(0, 0.1, 5.5);
 
     this.group = new THREE.Group();
     this.scene.add(this.group);
@@ -150,7 +150,7 @@ export class World {
         color: 0x9ecbff,
         wireframe: true,
         transparent: true,
-        opacity: 0.1
+        opacity: 0.14
       })
     );
     this.wire = wire;
@@ -159,7 +159,7 @@ export class World {
     const ribbonGeo = new THREE.TorusKnotGeometry(1.85, 0.012, 420, 12, 2, 3);
     this.ribbon = new THREE.Mesh(
       ribbonGeo,
-      new THREE.MeshBasicMaterial({ color: 0x7ec8ff, transparent: true, opacity: 0.32 })
+      new THREE.MeshBasicMaterial({ color: 0x7ec8ff, transparent: true, opacity: 0.48 })
     );
     this.group.add(this.ribbon);
 
@@ -175,7 +175,7 @@ export class World {
     const geo = new THREE.BufferGeometry();
     geo.setAttribute("position", new THREE.BufferAttribute(this.current, 3));
     const sizes = new Float32Array(count);
-    for (let i = 0; i < count; i++) sizes[i] = Math.random() * 1.1 + 0.35;
+    for (let i = 0; i < count; i++) sizes[i] = Math.random() * 1.6 + 0.5;
     geo.setAttribute("aSize", new THREE.BufferAttribute(sizes, 1));
 
     this.pointsMat = new THREE.ShaderMaterial({
@@ -194,8 +194,8 @@ export class World {
           p.y += sin(uTime * 0.35 + position.x * 0.6) * 0.04;
           vec4 mv = modelViewMatrix * vec4(p, 1.0);
           gl_Position = projectionMatrix * mv;
-          gl_PointSize = aSize * uPixelRatio * (56.0 / -mv.z);
-          vAlpha = clamp(1.6 / length(mv.xyz), 0.08, 0.72);
+          gl_PointSize = aSize * uPixelRatio * (88.0 / -mv.z);
+          vAlpha = clamp(2.0 / length(mv.xyz), 0.1, 0.9);
         }
       `,
       fragmentShader: /* glsl */ `
@@ -228,14 +228,14 @@ export class World {
       new THREE.LineBasicMaterial({
         color: 0x7eb8ff,
         transparent: true,
-        opacity: 0.08,
+        opacity: 0.12,
         blending: THREE.AdditiveBlending,
         depthWrite: false
       })
     );
     this.group.add(this.lines);
 
-    const bloom = this.mobile || this.reduced || this.quiet ? 0.16 : 0.28;
+    const bloom = this.mobile || this.reduced ? 0.28 : 0.52;
     this.composer = new EffectComposer(this.renderer);
     this.composer.addPass(new RenderPass(this.scene, this.camera));
     this.bloomPass = new UnrealBloomPass(
@@ -336,13 +336,13 @@ export class World {
     this.ribbon.rotation.x = t * 0.12;
     this.core.rotation.y = rot * 0.6;
 
-    const z = (this.quiet ? 7.2 : 6.1) - p * 0.9;
-    const y = 0.12 + Math.sin(p * Math.PI) * 0.22;
+    const z = 5.5 - p * 0.7;
+    const y = 0.08 + Math.sin(p * Math.PI) * 0.18;
     this.camera.position.z += (z - this.camera.position.z) * 0.06;
     this.camera.position.y += (y - this.camera.position.y) * 0.06;
     this.camera.lookAt(0, 0, 0);
 
-    this.bloomPass.strength = this.mobile || this.reduced || this.quiet ? 0.14 : 0.22 + p * 0.08;
+    this.bloomPass.strength = this.mobile || this.reduced ? 0.26 : 0.48 + p * 0.12;
     this.composer.render();
   };
 }

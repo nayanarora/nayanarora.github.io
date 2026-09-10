@@ -1,31 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-AU">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="google-site-verification" content="sngwtRhSEzvXFoY1ivpCkiXKmrZCm-clFLIDuHGseog">
-  <title>Nayan Arora — Applied Intelligence</title>
-  <meta name="description" content="Nayan Arora is an Applied AI Engineer at Sunstone Advisory in Canberra. Civic rates modelling, climate LSTMs, spatial AI.">
+  <title>Nayan Arora</title>
+  <meta name="description" content="Nayan Arora — Applied AI Engineer at Sunstone Advisory, Canberra.">
   <meta name="author" content="Nayan Arora">
   <link rel="canonical" href="https://nayanarora.github.io/">
   <link rel="author" href="https://nayanarora.github.io/nayan-arora.html">
   <link rel="me" href="https://www.linkedin.com/in/nayanarora">
   <link rel="me" href="https://github.com/nayanarora">
   <link rel="me" href="https://orcid.org/0009-0004-6721-7076">
-  <meta property="og:title" content="Nayan Arora — Applied Intelligence">
-  <meta property="og:description" content="The practice of turning high-consequence problems into systems that think, govern themselves, and last.">
+  <meta property="og:title" content="Nayan Arora">
+  <meta property="og:description" content="Applied AI Engineer, Sunstone Advisory, Canberra.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://nayanarora.github.io/">
   <meta property="og:image" content="https://nayanarora.github.io/images/IMG_6484.jpeg">
-  <meta property="og:locale" content="en_AU">
   <meta name="theme-color" content="#000000">
   <link rel="apple-touch-icon" sizes="180x180" href="icon_180x180.png">
   <link rel="icon" type="image/png" sizes="32x32" href="icon_32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="icon_16x16.png">
   <link rel="manifest" href="site.webmanifest">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/site.css">
   <script type="importmap">
     {
@@ -38,220 +36,23 @@
 </head>
 <body>
   <a class="skip" href="#content">Skip to content</a>
-  <div class="loader" id="loader" aria-hidden="true">
-    <div class="loader__mark" aria-hidden="true"><span></span><span></span><span></span></div>
-  </div>
-  <div class="progress" aria-hidden="true"></div>
+  <div class="loader" id="loader"></div>
   <canvas id="stage" aria-hidden="true"></canvas>
-  <div class="grain"></div>
-  <div class="vignette"></div>
 
-  <header class="nav">
-    <div class="nav__inner">
-      <a class="mark" href="index.html" aria-label="Nayan home">
-        <span class="mark__bars" aria-hidden="true"><span></span><span></span><span></span></span>
-        Nayan
-      </a>
-      <button class="nav__toggle" type="button" aria-label="Menu" aria-expanded="false">☰</button>
-      <nav>
-        <ul class="nav__links">
-          <li><a href="index.html" class="is-active">Paradigm</a></li>
-          <li><a href="work.html">Work</a></li>
-          <li><a href="about.html">About</a></li>
-          <li><a href="writings.html">Writings</a></li>
-          <li><a href="nayan-arora.html">Identity</a></li>
-          <li><a class="nav__cta" href="contact.html">Connect</a></li>
-        </ul>
-      </nav>
-    </div>
+  <header class="hud">
+    <a href="index.html"><strong>Nayan Arora</strong></a>
+    <button class="hud__menu" type="button" aria-label="Menu" aria-expanded="false">Menu</button>
+    <nav>
+      <a href="work.html">Work</a>
+      <a href="about.html">About</a>
+      <a href="writings.html">Notes</a>
+      <a href="contact.html">Mail</a>
+    </nav>
   </header>
 
-  <main id="content" class="page">
-    <section class="hero">
-      <div class="hero__copy">
-        <p class="eyebrow">Applied Intelligence</p>
-        <h1 class="display">
-          <span>Nayan</span>
-          <span>Arora</span>
-        </h1>
-        <p class="subhead">The business is the mind that builds the next system.</p>
-        <div class="hero__meta">
-          <span>Canberra</span>
-          <span>Sunstone Advisory</span>
-          <span>Civic · Climate · Spatial</span>
-        </div>
-        <div class="scroll-hint"><i></i> Scroll the field</div>
-      </div>
-    </section>
-
-    <section class="chapter">
-      <div class="wrap split">
-        <div data-reveal>
-          <p class="eyebrow">The paradigm</p>
-          <h2 class="headline">Intelligence that belongs inside the institution.</h2>
-        </div>
-        <div class="stack" data-reveal>
-          <p class="lede">Not a product. Not a pitch deck. A way of working: take a high-consequence problem, give it a model that can be audited, and leave the organisation stronger than you found it.</p>
-          <p class="body">Nayan practices applied AI at the point where government, climate, and spatial systems actually run. The work is quiet, sovereign, and human-led. The standard is Apple-grade attention — formed from a year inside the company — brought to Australian civic and defence-adjacent technology.</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="chapter" id="brisbane">
-      <div class="wrap">
-        <p class="eyebrow" data-reveal>Featured · Civic systems</p>
-        <h2 class="headline" data-reveal>Brisbane City Council.<br>Rates modelling at city scale.</h2>
-        <p class="lede" data-reveal style="max-width: 28em; margin-top: 22px;">
-          Australia’s largest local government needed to replace InfoRM — the engine that tests how rating rules become revenue, and how policy becomes a bill.
-        </p>
-        <div class="metrics" data-reveal>
-          <div class="metric">
-            <b>$1.78m</b>
-            <span>Awarded to Sunstone Advisory, January 2026</span>
-          </div>
-          <div class="metric">
-            <b>3–5 yrs</b>
-            <span>Initial term of three years, maximum of five</span>
-          </div>
-          <div class="metric">
-            <b>RMaaS</b>
-            <span>Scenario modelling, calculation, governance, Australian cloud</span>
-          </div>
-        </div>
-        <div class="split" style="margin-top: 64px;">
-          <p class="body" data-reveal>
-            As Applied AI Engineer at Sunstone Advisory, Nayan works on the intelligence layer of this civic platform: high-performance calculation, policy-as-logic, and analytics that executives, auditors, and the community can stand behind. The city models the future before it legislates it.
-          </p>
-          <p class="body" data-reveal>
-            Partners on the award include Data Interactive, Excelerated Consulting, Harbour Software, and Seisma. The brief is not “AI for AI’s sake.” It is defensible rating, faster scenario turnaround, and a modelling environment worthy of a capital city.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <section class="chapter" id="climate">
-      <div class="wrap split">
-        <div data-reveal>
-          <p class="eyebrow">Climate intelligence</p>
-          <h2 class="headline">Half-hourly rain from a daily number.</h2>
-        </div>
-        <div class="stack" data-reveal>
-          <p class="lede">First machine-learning method to disaggregate daily precipitation to half-hourly resolution — with a normalisation layer that conserves the daily total.</p>
-          <p class="body">Published 2025 in <em>Stochastic Environmental Research and Risk Assessment</em> with Harrison Oates, Hong Gic Oh, and Trevor Lee. The model holds across five Australian climate zones. When rolled to hourly, it outperforms prior approaches on most measured metrics.</p>
-          <p class="body">The same line of work powered climate-data production for 225 weather stations at Exemplary Energy, and a companion paper at the Asia-Pacific Solar Research Conference, Sydney, 2024.</p>
-          <div class="actions">
-            <a class="btn" href="https://doi.org/10.1007/s00477-025-02996-0" target="_blank" rel="noopener">Read the paper</a>
-            <a class="btn btn--ghost" href="writings.html">Writings</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="chapter" id="spatial">
-      <div class="wrap">
-        <p class="eyebrow" data-reveal>Spatial intelligence</p>
-        <h2 class="headline" data-reveal>Shared space.<br>Federated sight.</h2>
-        <div class="grid" style="margin-top: 48px;">
-          <article class="card" data-reveal>
-            <div>
-              <div class="tag">Track &amp; Secure</div>
-              <h3>VR / AR operations</h3>
-              <p>Unity, ARFoundation, PolySpatial shared space, Google Cloud and ArcGIS. A proof of concept for tracking and securing in mixed reality — real-time visualisation for operators who still have to act.</p>
-            </div>
-            <a class="link" href="https://github.com/nayanarora/Track-and-Secure-POC-" target="_blank" rel="noopener">GitHub repository</a>
-          </article>
-          <article class="card" data-reveal>
-            <div>
-              <div class="tag">University of Canberra</div>
-              <h3>Federated disaster drones</h3>
-              <p>Mask R-CNN and transfer learning for scene understanding. Decentralised models on edge drones, with a feedback loop to the control centre. A POC for disaster-management stakeholders who cannot centralise the sky.</p>
-            </div>
-            <a class="link" href="work.html">See the work</a>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="chapter">
-      <div class="wrap">
-        <div class="split">
-          <div data-reveal>
-            <p class="eyebrow">Selected work</p>
-            <h2 class="headline">A practice, not a catalogue.</h2>
-          </div>
-          <p class="lede" data-reveal>From CubeSats to surgical vision, from store-sales LSTMs to Apple retail craft. The through-line is the same: make the system think without making it opaque.</p>
-        </div>
-        <div class="grid" style="margin-top: 48px;">
-          <article class="card" data-reveal>
-            <div>
-              <div class="tag">Exemplary Energy</div>
-              <h3>National climate data</h3>
-              <p>Graduate Software Analyst. LSTM disaggregation into production. Climate services across 225 Australian stations. ACT dwelling-price analysis beside the weather work.</p>
-            </div>
-          </article>
-          <article class="card" data-reveal>
-            <div>
-              <div class="tag">Sunstone</div>
-              <h3>Spatial operations</h3>
-              <p>Track &amp; Secure and the live mixed-reality stack: Unity, PolySpatial, ArcGIS. Production on Enterprise. A public POC is the visible edge of a private practice.</p>
-            </div>
-          </article>
-          <article class="card" data-reveal>
-            <div>
-              <div class="tag">UC · ASU · NUS</div>
-              <h3>Drones, CubeSat, theatre vision</h3>
-              <p>Federated disaster drones. A nano-satellite that had to image Earth. Surgical-tool computer vision at NUS. Finished work, still part of the standard.</p>
-            </div>
-          </article>
-          <article class="card" data-reveal>
-            <div>
-              <div class="tag">Sunstone</div>
-              <h3>Governed AI</h3>
-              <p>Applied AI inside accredited Australian Government and Defence-adjacent delivery. The code is not on public GitHub. The role is.</p>
-            </div>
-          </article>
-        </div>
-        <div class="actions" data-reveal>
-          <a class="btn" href="work.html">Full archive</a>
-          <a class="btn btn--ghost" href="https://github.com/nayanarora" target="_blank" rel="noopener">GitHub</a>
-        </div>
-      </div>
-    </section>
-
-    <section class="chapter">
-      <div class="wrap split">
-        <div class="portrait" data-reveal>
-          <img src="images/IMG_6484.jpeg" alt="Nayan Arora">
-        </div>
-        <div class="stack" data-reveal>
-          <p class="eyebrow">The practice</p>
-          <h2 class="headline">Nayan is the firm.</h2>
-          <p class="lede">Applied AI Engineer at Sunstone Advisory. Master of Information Technology and Systems — AI/ML — University of Canberra, 7/7. B.S. Computer Science, cum laude, Arizona State. Former Apple Specialist, Scottsdale.</p>
-          <p class="body">The work now sits in high-consequence Australian systems: civic finance, climate time series, spatial operations, governed AI. Nothing here is for sale. Everything here is an invitation to the standard.</p>
-          <div class="actions">
-            <a class="btn" href="about.html">About Nayan</a>
-            <a class="btn btn--ghost" href="contact.html">Begin a conversation</a>
-          </div>
-        </div>
-      </div>
-    </section>
+  <main id="content" class="frame">
+    <section class="hero" aria-label="Nayan Arora"></section>
   </main>
-
-  <footer class="footer">
-    <div class="wrap-wide footer__grid">
-      <div>
-        <div class="mark"><span class="mark__bars" aria-hidden="true"><span></span><span></span><span></span></span> Nayan</div>
-        <p class="small" style="margin-top: 12px;">© 2026 Nayan Arora. Canberra.</p>
-      </div>
-      <div style="display:flex; gap: 22px; flex-wrap: wrap;">
-        <a href="nayan-arora.html">Identity</a>
-        <a href="https://www.linkedin.com/in/nayanarora" target="_blank" rel="noopener">LinkedIn</a>
-        <a href="https://github.com/nayanarora" target="_blank" rel="noopener">GitHub</a>
-        <a href="https://medium.com/@nayan-arora" target="_blank" rel="noopener">Medium</a>
-        <a href="mailto:nayan.arora.work@gmail.com">Email</a>
-      </div>
-    </div>
-  </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>

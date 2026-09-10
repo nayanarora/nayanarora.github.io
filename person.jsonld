@@ -1,0 +1,85 @@
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": "https://nayanarora.github.io/#nayan",
+      "name": "Nayan Arora",
+      "alternateName": ["Nayan A.", "Nayan Arora Canberra", "Nayan Arora Sunstone"],
+      "jobTitle": "Applied AI Engineer",
+      "description": "Nayan Arora is an Applied AI Engineer at Sunstone Advisory in Canberra, Australia. He designs applied intelligence for civic rates modelling, climate time series, and spatial operations. He is the Canberra-based Nayan Arora — not the OHSU nephrologist and not the VoxGenie founder in Bengaluru.",
+      "url": "https://nayanarora.github.io/",
+      "image": "https://nayanarora.github.io/images/IMG_6484.jpeg",
+      "email": "mailto:nayan.arora.work@gmail.com",
+      "nationality": "AU",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Canberra",
+        "addressRegion": "ACT",
+        "addressCountry": "AU"
+      },
+      "worksFor": {
+        "@type": "Organization",
+        "name": "Sunstone Advisory",
+        "url": "https://www.sunstoneadvisory.com.au"
+      },
+      "affiliation": {
+        "@type": "Organization",
+        "name": "Sunstone Advisory"
+      },
+      "alumniOf": [
+        {
+          "@type": "CollegeOrUniversity",
+          "name": "University of Canberra"
+        },
+        {
+          "@type": "CollegeOrUniversity",
+          "name": "Arizona State University"
+        }
+      ],
+      "identifier": [
+        {
+          "@type": "PropertyValue",
+          "propertyID": "ORCID",
+          "value": "0009-0004-6721-7076"
+        }
+      ],
+      "sameAs": [
+        "https://www.linkedin.com/in/nayanarora",
+        "https://github.com/nayanarora",
+        "https://orcid.org/0009-0004-6721-7076",
+        "https://medium.com/@nayan-arora",
+        "https://www.instagram.com/nayanaroraa",
+        "https://nayanarora.github.io/nayan-arora.html"
+      ],
+      "knowsAbout": [
+        "Applied artificial intelligence",
+        "Civic rates modelling",
+        "Brisbane City Council",
+        "Long short-term memory",
+        "Precipitation disaggregation",
+        "Federated learning",
+        "Spatial computing",
+        "Unity",
+        "Apple PolySpatial",
+        "AI governance"
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://nayanarora.github.io/#website",
+      "name": "Nayan Arora",
+      "url": "https://nayanarora.github.io/",
+      "publisher": { "@id": "https://nayanarora.github.io/#nayan" },
+      "inLanguage": "en-AU"
+    },
+    {
+      "@type": "ProfilePage",
+      "@id": "https://nayanarora.github.io/nayan-arora.html",
+      "url": "https://nayanarora.github.io/nayan-arora.html",
+      "name": "Nayan Arora — Identity",
+      "mainEntity": { "@id": "https://nayanarora.github.io/#nayan" },
+      "about": { "@id": "https://nayanarora.github.io/#nayan" }
+    }
+  ]
+}

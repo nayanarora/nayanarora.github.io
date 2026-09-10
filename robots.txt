@@ -1,0 +1,31 @@
+User-agent: *
+Allow: /
+Disallow: /generic.html
+Disallow: /single.html
+Disallow: /styles.html
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+Sitemap: https://nayanarora.github.io/sitemap.xml

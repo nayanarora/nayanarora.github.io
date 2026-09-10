@@ -619,6 +619,7 @@ body.quiet .vignette {
 
 .pagehead .headline {
   max-width: 16ch;
+  color: #fff;
 }
 
 .prose {

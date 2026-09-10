@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Work — Nayan Arora</title>
+  <meta name="description" content="Civic rates modelling for Brisbane City Council, climate LSTMs, spatial AR, federated drones, and the archive of Nayan Arora’s applied intelligence.">
+  <meta name="theme-color" content="#000000">
+  <link rel="apple-touch-icon" sizes="180x180" href="icon_180x180.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="icon_32x32.png">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/site.css">
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+<body>
+  <a class="skip" href="#content">Skip to content</a>
+  <div class="loader" id="loader" aria-hidden="true">
+    <div class="loader__mark"><span></span><span></span><span></span></div>
+  </div>
+  <div class="progress"></div>
+  <canvas id="stage" aria-hidden="true"></canvas>
+  <div class="grain"></div>
+  <div class="vignette"></div>
+
+  <header class="nav">
+    <div class="nav__inner">
+      <a class="mark" href="index.html" aria-label="Nayan home">
+        <span class="mark__bars" aria-hidden="true"><span></span><span></span><span></span></span>
+        Nayan
+      </a>
+      <button class="nav__toggle" type="button" aria-label="Menu" aria-expanded="false">☰</button>
+      <nav>
+        <ul class="nav__links">
+          <li><a href="index.html">Paradigm</a></li>
+          <li><a href="work.html" class="is-active">Work</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="writings.html">Writings</a></li>
+          <li><a class="nav__cta" href="contact.html">Connect</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="content" class="page">
+    <header class="pagehead wrap">
+      <p class="eyebrow">Archive</p>
+      <h1 class="headline">Work that has to hold.</h1>
+      <p class="lede" style="margin-top: 20px; max-width: 28em;">Selected systems, papers, and proofs. Civic first. Then climate, space, and the lab.</p>
+    </header>
+
+    <section class="wrap" style="padding-bottom: 18vh;">
+      <div class="work-list">
+        <article class="work-item" data-reveal>
+          <div class="tag">2026 · Civic</div>
+          <div>
+            <h2>Brisbane City Council — Rates Modelling Solution</h2>
+            <p>Sunstone Advisory was awarded Brisbane City Council’s Rates Modelling Solution (CW24476 / 534192) in January 2026 — $1,782,212, three years with a five-year maximum — to replace InfoRM. The platform models property rating rules and charges before they hit revenue. Nayan, Applied AI Engineer at Sunstone, works the intelligence: scenario engines, policy logic, governed analytics on Australian cloud. Partners: Data Interactive, Excelerated Consulting, Harbour Software, Seisma.</p>
+          </div>
+          <a class="link" href="https://www.sunstoneadvisory.com.au/financial-modelling-simulation" target="_blank" rel="noopener">RMaaS</a>
+        </article>
+
+        <article class="work-item" data-reveal>
+          <div class="tag">2025 · Climate</div>
+          <div>
+            <h2>LSTM sub-hourly precipitation disaggregation</h2>
+            <p>Peer-reviewed in Stochastic Environmental Research and Risk Assessment. A two-layer LSTM with a conservation normalisation that forces half-hourly rain to sum to the daily observation. First ML method at this temporal resolution. Validated across five Australian climate zones. Co-authors: Harrison Oates, Hong Gic Oh, Trevor Lee.</p>
+          </div>
+          <a class="link" href="https://doi.org/10.1007/s00477-025-02996-0" target="_blank" rel="noopener">DOI</a>
+        </article>
+
+        <article class="work-item" data-reveal>
+          <div class="tag">2024–25 · Energy</div>
+          <div>
+            <h2>Exemplary Energy — climate data at national scale</h2>
+            <p>Intern, then Graduate Software Analyst / Software Analyst Programmer. The LSTM left the thesis and entered production. Climate-data services for 225 weather stations. Historical weather products. ACT rental and sale-price analysis. Asia-Pacific Solar Research Conference, Sydney, December 2024.</p>
+          </div>
+        </article>
+
+        <article class="work-item" data-reveal>
+          <div class="tag">2023– · Spatial</div>
+          <div>
+            <h2>Track &amp; Secure — VR/AR operations POC</h2>
+            <p>Sunstone internship and ongoing spatial practice. Unity3D, C#, ARFoundation, Apple PolySpatial shared space, Google Cloud API, ArcGIS Maps. Immersive tracking for operators who still have to decide in the room. Django and React where the work meets the web.</p>
+          </div>
+          <a class="link" href="https://github.com/nayanarora/Track-and-Secure-POC-" target="_blank" rel="noopener">Repo</a>
+        </article>
+
+        <article class="work-item" data-reveal>
+          <div class="tag">2024 · Autonomy</div>
+          <div>
+            <h2>Federated disaster drones</h2>
+            <p>Technical Manager, University of Canberra. Mask R-CNN, TensorFlow, PyTorch/TorchVision for object identification and scene understanding. Federated learning so edge drones train without centralising imagery. Feedback between the swarm and the control centre. Stakeholder POC for disaster management.</p>
+          </div>
+        </article>
+
+        <article class="work-item" data-reveal>
+          <div class="tag">2025 · Applied AI</div>
+          <div>
+            <h2>Sunstone · Xaana · BizFlash</h2>
+            <p>Applied AI Engineer at Sunstone Advisory — secure, accredited outcomes for Australian Government and Defence-adjacent work. ICT Business Analyst at Xaana.Ai (Turium lineage): translating AI into operating business systems. Lead AI Engineer at BizFlash — transfer learning, TorchVision, R-CNN for identification at product speed.</p>
+          </div>
+        </article>
+
+        <article class="work-item" data-reveal>
+          <div class="tag">Lab</div>
+          <div>
+            <h2>Parkinson’s classifier</h2>
+            <p>Data exploration against the academic record. Multiple classical ML families compared to find the method that actually earns the diagnosis task — not the one that merely fits the notebook.</p>
+          </div>
+          <a class="link" href="https://github.com/nayanarora/PD" target="_blank" rel="noopener">PD</a>
+        </article>
+
+        <article class="work-item" data-reveal>
+          <div class="tag">Lab</div>
+          <div>
+            <h2>NLP sentiment — tweets to a readable web</h2>
+            <p>Research-grade sentiment across user tweets. Several algorithms, then Python and Streamlit so a human can actually read the result.</p>
+          </div>
+          <a class="link" href="https://github.com/nayanarora/topicModeling" target="_blank" rel="noopener">Topic modeling</a>
+        </article>
+
+        <article class="work-item" data-reveal>
+          <div class="tag">Lab</div>
+          <div>
+            <h2>Store-sales time series</h2>
+            <p>Neural and LSTM prediction under oil prices, holidays, and natural shocks. Accuracy as an ongoing craft, not a single Kaggle afternoon.</p>
+          </div>
+          <a class="link" href="https://github.com/nayanarora/timeSeries_storeSales" target="_blank" rel="noopener">Repo</a>
+        </article>
+
+        <article class="work-item" data-reveal>
+          <div class="tag">2019–21 · Space</div>
+          <div>
+            <h2>CubeSat — thermal Earth from a PocketBeagle</h2>
+            <p>ASU capstone nano-satellite. OpenLST radios, PocketBeagle, OpenMV camera. Python, Java, C++. A thermal image of Earth is only interesting if the radio, the board, and the optics agree in vacuum.</p>
+          </div>
+        </article>
+
+        <article class="work-item" data-reveal>
+          <div class="tag">2019 · Clinical</div>
+          <div>
+            <h2>NUS SERIUS — surgical tool supply</h2>
+            <p>Summer research, National University of Singapore. Computer vision to keep theatres stocked without the lag of human counting. TensorFlow, Keras, OpenCV. Prototypes under test, not slides.</p>
+          </div>
+          <a class="link" href="https://github.com/nayanarora/serius" target="_blank" rel="noopener">SERIUS</a>
+        </article>
+
+        <article class="work-item" data-reveal>
+          <div class="tag">Front-end</div>
+          <div>
+            <h2>Interfaces that disappear</h2>
+            <p>React, Bootstrap, Streamlit, Tkinter, GIS with Bokeh. The interface is successful when the model is the thing you remember.</p>
+          </div>
+          <a class="link" href="https://github.com/nayanarora/AI-ML" target="_blank" rel="noopener">AI/ML repo</a>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap-wide footer__grid">
+      <div>
+        <div class="mark"><span class="mark__bars" aria-hidden="true"><span></span><span></span><span></span></span> Nayan</div>
+        <p class="small" style="margin-top: 12px;">© 2026 Nayan Arora. Canberra.</p>
+      </div>
+      <div style="display:flex; gap: 22px; flex-wrap: wrap;">
+        <a href="https://www.linkedin.com/in/nayanarora" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/nayanarora" target="_blank" rel="noopener">GitHub</a>
+        <a href="mailto:nayan.arora.work@gmail.com">Email</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

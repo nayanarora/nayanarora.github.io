@@ -88,8 +88,8 @@ const coreFrag = /* glsl */ `
   void main() {
     float fresnel = pow(1.0 - max(dot(normalize(vNormal), normalize(vView)), 0.0), 2.6);
     vec3 base = mix(uColorA, uColorB, uMix);
-    vec3 col = mix(base * 0.22, vec3(0.92, 0.95, 1.0), fresnel);
-    gl_FragColor = vec4(col, 0.92);
+    vec3 col = mix(base * 0.12, vec3(0.78, 0.86, 0.96), fresnel * 0.85);
+    gl_FragColor = vec4(col, 0.88);
   }
 `;
 
@@ -98,7 +98,8 @@ export class World {
     this.canvas = canvas;
     this.reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     this.mobile = window.matchMedia("(max-width: 900px)").matches;
-    this.count = this.mobile ? 2800 : 7200;
+    this.quiet = document.body.classList.contains("quiet");
+    this.count = this.mobile ? 1800 : this.quiet ? 3200 : 4800;
     this.progress = 0;
     this.pointer = new THREE.Vector2(0, 0);
     this.clock = new THREE.Clock();
@@ -123,7 +124,7 @@ export class World {
 
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 80);
-    this.camera.position.set(0, 0.2, 5.4);
+    this.camera.position.set(0, 0.15, this.quiet ? 7.4 : 6.2);
 
     this.group = new THREE.Group();
     this.scene.add(this.group);
@@ -149,7 +150,7 @@ export class World {
         color: 0x9ecbff,
         wireframe: true,
         transparent: true,
-        opacity: 0.16
+        opacity: 0.1
       })
     );
     this.wire = wire;
@@ -158,7 +159,7 @@ export class World {
     const ribbonGeo = new THREE.TorusKnotGeometry(1.85, 0.012, 420, 12, 2, 3);
     this.ribbon = new THREE.Mesh(
       ribbonGeo,
-      new THREE.MeshBasicMaterial({ color: 0x7ec8ff, transparent: true, opacity: 0.55 })
+      new THREE.MeshBasicMaterial({ color: 0x7ec8ff, transparent: true, opacity: 0.32 })
     );
     this.group.add(this.ribbon);
 
@@ -174,7 +175,7 @@ export class World {
     const geo = new THREE.BufferGeometry();
     geo.setAttribute("position", new THREE.BufferAttribute(this.current, 3));
     const sizes = new Float32Array(count);
-    for (let i = 0; i < count; i++) sizes[i] = Math.random() * 2.2 + 0.6;
+    for (let i = 0; i < count; i++) sizes[i] = Math.random() * 1.1 + 0.35;
     geo.setAttribute("aSize", new THREE.BufferAttribute(sizes, 1));
 
     this.pointsMat = new THREE.ShaderMaterial({
@@ -193,8 +194,8 @@ export class World {
           p.y += sin(uTime * 0.35 + position.x * 0.6) * 0.04;
           vec4 mv = modelViewMatrix * vec4(p, 1.0);
           gl_Position = projectionMatrix * mv;
-          gl_PointSize = aSize * uPixelRatio * (180.0 / -mv.z);
-          vAlpha = clamp(2.4 / length(mv.xyz), 0.12, 1.0);
+          gl_PointSize = aSize * uPixelRatio * (56.0 / -mv.z);
+          vAlpha = clamp(1.6 / length(mv.xyz), 0.08, 0.72);
         }
       `,
       fragmentShader: /* glsl */ `
@@ -222,19 +223,19 @@ export class World {
     this.lineCount = lineCount;
     const lineGeo = new THREE.BufferGeometry();
     lineGeo.setAttribute("position", new THREE.BufferAttribute(linePos, 3));
-    this.lines = new THREE.LineSegments(
+        this.lines = new THREE.LineSegments(
       lineGeo,
       new THREE.LineBasicMaterial({
         color: 0x7eb8ff,
         transparent: true,
-        opacity: 0.14,
+        opacity: 0.08,
         blending: THREE.AdditiveBlending,
         depthWrite: false
       })
     );
     this.group.add(this.lines);
 
-    const bloom = this.mobile || this.reduced ? 0.35 : 0.85;
+    const bloom = this.mobile || this.reduced || this.quiet ? 0.16 : 0.28;
     this.composer = new EffectComposer(this.renderer);
     this.composer.addPass(new RenderPass(this.scene, this.camera));
     this.bloomPass = new UnrealBloomPass(
@@ -335,13 +336,13 @@ export class World {
     this.ribbon.rotation.x = t * 0.12;
     this.core.rotation.y = rot * 0.6;
 
-    const z = 5.6 - p * 1.4;
-    const y = 0.15 + Math.sin(p * Math.PI) * 0.35;
+    const z = (this.quiet ? 7.2 : 6.1) - p * 0.9;
+    const y = 0.12 + Math.sin(p * Math.PI) * 0.22;
     this.camera.position.z += (z - this.camera.position.z) * 0.06;
     this.camera.position.y += (y - this.camera.position.y) * 0.06;
     this.camera.lookAt(0, 0, 0);
 
-    this.bloomPass.strength = this.mobile || this.reduced ? 0.28 : 0.55 + p * 0.35;
+    this.bloomPass.strength = this.mobile || this.reduced || this.quiet ? 0.14 : 0.22 + p * 0.08;
     this.composer.render();
   };
 }

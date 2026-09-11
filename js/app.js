@@ -216,14 +216,6 @@ function modules() {
     }, 720);
   };
 
-  const atEdge = (dir) => {
-    const panel = panels[current()];
-    if (!panel) return true;
-    if (panel.scrollHeight <= panel.clientHeight + 2) return true;
-    if (dir > 0) return panel.scrollTop + panel.clientHeight >= panel.scrollHeight - 6;
-    return panel.scrollTop <= 6;
-  };
-
   if (!reduced) {
     let wheelAcc = 0;
     let wheelAt = 0;
@@ -232,8 +224,6 @@ function modules() {
       (e) => {
         if (document.documentElement.classList.contains("is-locked")) return;
         if (e.ctrlKey) return;
-        const dir = e.deltaY > 0 ? 1 : -1;
-        if (!atEdge(dir)) return;
         e.preventDefault();
         const now = Date.now();
         if (now - wheelAt > 420) wheelAcc = 0;
@@ -264,10 +254,7 @@ function modules() {
       (e) => {
         if (document.documentElement.classList.contains("is-locked")) return;
         const y = e.touches[0]?.clientY ?? 0;
-        const dy = startY - y;
-        if (Math.abs(dy) < 10) return;
-        const dir = dy > 0 ? 1 : -1;
-        if (!atEdge(dir)) return;
+        if (Math.abs(startY - y) < 10) return;
         e.preventDefault();
       },
       { passive: false }
@@ -279,10 +266,8 @@ function modules() {
         if (busy) return;
         const y = e.changedTouches[0]?.clientY ?? startY;
         const dy = startY - y;
-        if (Math.abs(dy) < 52) return;
-        const dir = dy > 0 ? 1 : -1;
-        if (!atEdge(dir)) return;
-        go(current() + dir);
+        if (Math.abs(dy) < 48) return;
+        go(current() + (dy > 0 ? 1 : -1));
       },
       { passive: true }
     );
@@ -293,10 +278,8 @@ function modules() {
     const keys = ["PageDown", "PageUp", "ArrowDown", "ArrowUp", " "];
     if (!keys.includes(e.key)) return;
     if (e.key === " " && /^(INPUT|TEXTAREA|BUTTON|A)$/.test(e.target.tagName)) return;
-    const dir = e.key === "PageUp" || e.key === "ArrowUp" ? -1 : 1;
-    if (!atEdge(dir)) return;
     e.preventDefault();
-    go(current() + dir);
+    go(current() + (e.key === "PageUp" || e.key === "ArrowUp" ? -1 : 1));
   });
 
   return { go, current, panels };

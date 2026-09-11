@@ -113,7 +113,7 @@ export class World {
     const accents = new Float32Array(count);
     for (let i = 0; i < count; i++) {
       sizes[i] = hash(i) * 0.55 + 0.22;
-      accents[i] = hash(i + 21) < 0.2 ? 1 : 0;
+      accents[i] = hash(i + 21) < 0.7 ? 1 : 0;
     }
     geo.setAttribute("aSize", new THREE.BufferAttribute(sizes, 1));
     geo.setAttribute("aAccent", new THREE.BufferAttribute(accents, 1));
@@ -222,7 +222,7 @@ export class World {
       this._dummy.scale.setScalar(0.6 + hash(i) * 0.5);
       this._dummy.updateMatrix();
       this.neurons.setMatrixAt(i, this._dummy.matrix);
-      this.neurons.setColorAt(i, hash(i + 9) < 0.2 ? orange : teal);
+      this.neurons.setColorAt(i, hash(i + 9) < 0.7 ? orange : teal);
     }
     this.neurons.instanceMatrix.needsUpdate = true;
     if (this.neurons.instanceColor) this.neurons.instanceColor.needsUpdate = true;

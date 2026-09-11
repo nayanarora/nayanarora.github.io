@@ -3,33 +3,6 @@ import { World } from "./scene.js";
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
 
-function bootLoader() {
-  const loader = $(".loader");
-  loader?.classList.add("is-done");
-}
-
-function nav() {
-  const toggle = $(".hud__menu");
-  toggle?.addEventListener("click", () => {
-    document.body.classList.toggle("nav-open");
-    toggle.setAttribute("aria-expanded", document.body.classList.contains("nav-open"));
-  });
-  $$(".hud nav a").forEach((a) =>
-    a.addEventListener("click", () => document.body.classList.remove("nav-open"))
-  );
-}
-
-function smooth() {
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return null;
-  const LenisCtor = window.Lenis;
-  if (!LenisCtor) return null;
-  const lenis = new LenisCtor({ duration: 1.05, smoothWheel: true, wheelMultiplier: 0.92 });
-  gsap.ticker.add((time) => lenis.raf(time * 1000));
-  gsap.ticker.lagSmoothing(0);
-  if (window.ScrollTrigger) lenis.on("scroll", ScrollTrigger.update);
-  return lenis;
-}
-
 function world() {
   const canvas = $("#stage");
   if (!canvas) return null;
@@ -39,27 +12,85 @@ function world() {
       const max = document.documentElement.scrollHeight - window.innerHeight;
       w.setProgress(max > 0 ? window.scrollY / max : 0);
     };
-    if (window.ScrollTrigger) {
-      ScrollTrigger.create({ start: 0, end: "max", onUpdate: update });
-    } else {
-      window.addEventListener("scroll", update, { passive: true });
-    }
+    window.addEventListener("scroll", update, { passive: true });
     update();
     return w;
   } catch (err) {
     console.warn("WebGL scene unavailable", err);
     canvas.remove();
-    document.body.classList.add("no-webgl");
     return null;
   }
 }
 
-bootLoader();
-nav();
-if (window.gsap && window.ScrollTrigger) {
-  gsap.registerPlugin(ScrollTrigger);
-  smooth();
-  world();
-} else {
-  world();
+function appear() {
+  const tiles = $$(".tile");
+  if (!tiles.length || !("IntersectionObserver" in window)) {
+    tiles.forEach((el) => el.classList.add("is-in"));
+    return;
+  }
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        entry.target.classList.toggle("is-in", entry.isIntersecting);
+      });
+    },
+    { threshold: 0.28, rootMargin: "0px 0px -8% 0px" }
+  );
+  tiles.forEach((el) => io.observe(el));
 }
+
+function sheets(scene) {
+  const dialog = $("#sheet");
+  const body = $("#sheet-body");
+  if (!dialog || !body) return;
+
+  const close = () => {
+    dialog.close();
+    if (scene) scene.quiet = false;
+    const section = location.hash && !location.hash.startsWith("#d-")
+      ? location.hash
+      : "";
+    if (section) history.replaceState(null, "", section);
+    else history.replaceState(null, "", location.pathname);
+  };
+
+  const open = (id) => {
+    const src = document.getElementById(`detail-${id}`);
+    if (!src) return;
+    body.innerHTML = src.innerHTML;
+    if (typeof dialog.showModal === "function") dialog.showModal();
+    else dialog.setAttribute("open", "");
+    if (scene) scene.quiet = true;
+    history.replaceState(null, "", `#d-${id}`);
+    $(".sheet .sheet__close")?.focus();
+  };
+
+  $$("[data-open]").forEach((btn) => {
+    btn.addEventListener("click", () => open(btn.dataset.open));
+  });
+
+  dialog.querySelector(".sheet__close")?.addEventListener("click", close);
+  dialog.addEventListener("click", (e) => {
+    if (e.target === dialog) close();
+  });
+  dialog.addEventListener("cancel", (e) => {
+    e.preventDefault();
+    close();
+  });
+
+  const bootHash = location.hash.replace("#", "");
+  if (bootHash.startsWith("d-")) open(bootHash.slice(2));
+}
+
+function hashScroll() {
+  const raw = location.hash.replace("#", "");
+  if (!raw || raw.startsWith("d-")) return;
+  const el = document.getElementById(raw);
+  el?.scrollIntoView({ behavior: "smooth" });
+}
+
+const scene = world();
+appear();
+sheets(scene);
+window.addEventListener("load", hashScroll);
+window.addEventListener("hashchange", hashScroll);

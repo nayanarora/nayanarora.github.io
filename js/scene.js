@@ -5,11 +5,11 @@ import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js"
 import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 
 const PALETTES = [
-  { a: new THREE.Color("#cfd8e3"), b: new THREE.Color("#7ec8ff") },
-  { a: new THREE.Color("#9ad7c8"), b: new THREE.Color("#4fd1c5") },
-  { a: new THREE.Color("#8ec5ff"), b: new THREE.Color("#4c8dff") },
-  { a: new THREE.Color("#c4b5fd"), b: new THREE.Color("#818cf8") },
-  { a: new THREE.Color("#f5f5f7"), b: new THREE.Color("#64d2ff") }
+  { a: new THREE.Color("#c8c8c8"), b: new THREE.Color("#e85d04") },
+  { a: new THREE.Color("#8f8f8f"), b: new THREE.Color("#f97316") },
+  { a: new THREE.Color("#d4d4d4"), b: new THREE.Color("#c2410c") },
+  { a: new THREE.Color("#9a9a9a"), b: new THREE.Color("#ea580c") },
+  { a: new THREE.Color("#b5b5b5"), b: new THREE.Color("#ff7a18") }
 ];
 
 function fibonacciSphere(count, radius) {
@@ -88,7 +88,7 @@ const coreFrag = /* glsl */ `
   void main() {
     float fresnel = pow(1.0 - max(dot(normalize(vNormal), normalize(vView)), 0.0), 2.6);
     vec3 base = mix(uColorA, uColorB, uMix);
-    vec3 col = mix(base * 0.18, vec3(0.9, 0.94, 1.0), fresnel);
+    vec3 col = mix(base * 0.16, vec3(1.0, 0.62, 0.28), fresnel);
     gl_FragColor = vec4(col, 0.92);
   }
 `;
@@ -99,7 +99,7 @@ export class World {
     this.reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     this.mobile = window.matchMedia("(max-width: 900px)").matches;
     this.quiet = false;
-    this.count = this.mobile ? 2200 : 5600;
+    this.count = this.mobile ? 1600 : 4200;
     this.progress = 0;
     this.pointer = new THREE.Vector2(0, 0);
     this.clock = new THREE.Clock();
@@ -147,7 +147,7 @@ export class World {
     const wire = new THREE.Mesh(
       new THREE.IcosahedronGeometry(1.22, 2),
       new THREE.MeshBasicMaterial({
-        color: 0x9ecbff,
+        color: 0xb0b0b0,
         wireframe: true,
         transparent: true,
         opacity: 0.14
@@ -159,7 +159,7 @@ export class World {
     const ribbonGeo = new THREE.TorusKnotGeometry(1.85, 0.012, 420, 12, 2, 3);
     this.ribbon = new THREE.Mesh(
       ribbonGeo,
-      new THREE.MeshBasicMaterial({ color: 0x7ec8ff, transparent: true, opacity: 0.48 })
+      new THREE.MeshBasicMaterial({ color: 0xe85d04, transparent: true, opacity: 0.42 })
     );
     this.group.add(this.ribbon);
 
@@ -181,7 +181,7 @@ export class World {
     this.pointsMat = new THREE.ShaderMaterial({
       uniforms: {
         uTime: { value: 0 },
-        uColor: { value: new THREE.Color("#c9e7ff") },
+        uColor: { value: new THREE.Color("#e8e8e8") },
         uPixelRatio: { value: Math.min(window.devicePixelRatio, 2) }
       },
       vertexShader: /* glsl */ `
@@ -217,7 +217,7 @@ export class World {
     this.points = new THREE.Points(geo, this.pointsMat);
     this.group.add(this.points);
 
-    const lineCount = this.mobile ? 220 : 520;
+    const lineCount = this.mobile ? 140 : 360;
     const linePos = new Float32Array(lineCount * 6);
     this.linePos = linePos;
     this.lineCount = lineCount;
@@ -226,7 +226,7 @@ export class World {
         this.lines = new THREE.LineSegments(
       lineGeo,
       new THREE.LineBasicMaterial({
-        color: 0x7eb8ff,
+        color: 0xe85d04,
         transparent: true,
         opacity: 0.12,
         blending: THREE.AdditiveBlending,
@@ -342,7 +342,11 @@ export class World {
     this.camera.position.y += (y - this.camera.position.y) * 0.06;
     this.camera.lookAt(0, 0, 0);
 
-    this.bloomPass.strength = this.mobile || this.reduced ? 0.26 : 0.48 + p * 0.12;
+    this.bloomPass.strength = this.quiet
+      ? 0.12
+      : this.mobile || this.reduced
+        ? 0.22
+        : 0.38 + p * 0.1;
     this.composer.render();
   };
 }

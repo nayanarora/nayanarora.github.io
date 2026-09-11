@@ -44,7 +44,3 @@ Do not merge this identity with Nayan Arora, M.D. (OHSU nephrology, Portland) or
 
 - https://nayanarora.github.io/
 - https://nayanarora.github.io/nayan-arora.html
-- https://nayanarora.github.io/work.html
-- https://nayanarora.github.io/about.html
-- https://nayanarora.github.io/writings.html
-- https://nayanarora.github.io/contact.html

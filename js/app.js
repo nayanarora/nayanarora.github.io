@@ -161,7 +161,7 @@ function sheets(scene) {
     else dialog.setAttribute("open", "");
     body.scrollTop = 0;
     history.replaceState(null, "", `#d-${id}`);
-    $(".sheet .sheet__close")?.focus();
+    dialog.querySelector(".sheet__close")?.focus({ preventScroll: true });
   };
 
   $$("[data-open]").forEach((btn) => {

@@ -44,13 +44,17 @@
 <body>
   <a class="skip" href="#about">Skip to content</a>
   <canvas id="stage" aria-hidden="true"></canvas>
-  <a class="mark" href="#about">Nayan Arora</a>
+  <a class="mark" href="#about" aria-label="Nayan Arora">
+    <i class="mark__node" aria-hidden="true"></i>
+    <span class="mark__sig">Nayan</span>
+    <i class="mark__rule" aria-hidden="true"></i>
+  </a>
 
   <main class="frame">
     <section class="panel is-on" id="about">
-      <article class="card card--about">
+      <article class="spread spread--about">
         <img class="portrait" src="images/portrait.jpg" width="1050" height="1400" alt="Nayan Arora in a grey suit">
-        <div class="card__copy">
+        <div class="copy">
           <p class="meta">About</p>
           <h1>Nayan Arora</h1>
           <p class="role">AI Solutions Architect</p>
@@ -75,7 +79,8 @@
             <img src="images/generated/spatial-ops.jpg" width="1152" height="864" alt="" loading="lazy">
             <span>Spatial / mixed reality<em>Unity · ArcGIS</em></span>
           </button>
-          <button class="tile tile--sensitive" type="button" data-open="governed">
+          <button class="tile" type="button" data-open="governed">
+            <img src="images/generated/governed-ai.jpg" width="1152" height="864" alt="" loading="lazy">
             <span>Governed AI<em>Sensitive work</em></span>
           </button>
           <button class="tile" type="button" data-open="exemplary">
@@ -115,7 +120,7 @@
     </section>
 
     <section class="panel" id="contact">
-      <article class="card card--contact">
+      <article class="spread spread--contact">
         <p class="meta">Contact</p>
         <h2>Contact</h2>
         <p class="contact-line">nayan.arora.work@gmail.com</p>
@@ -131,7 +136,11 @@
 
   <dialog class="sheet" id="sheet">
     <div class="sheet__bar">
-      <button class="sheet__close" type="button">Close</button>
+      <button class="sheet__close" type="button" aria-label="Close">
+        <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
+          <path d="M2 2l10 10M12 2L2 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </button>
     </div>
     <div class="sheet__body" id="sheet-body"></div>
   </dialog>
@@ -148,6 +157,7 @@
       <p>Unity, PolySpatial, and ArcGIS. Track &amp; Secure began as a proof of concept. Production work stays internal.</p>
     </template>
     <template id="detail-governed">
+      <img src="images/generated/governed-ai.jpg" width="1152" height="864" alt="Neural lattice on dark glass in an operations room">
       <p class="meta">Sensitive work</p>
       <h2>Governed AI</h2>
       <p>This work is sensitive, which is why nothing is shared here.</p>

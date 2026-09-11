@@ -184,6 +184,20 @@ button { font: inherit; color: inherit; }
   max-width: 62ch;
 }
 
+.role {
+  margin: -4px 0 16px;
+  font-size: clamp(16px, 2vw, 20px);
+  font-weight: 500;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+}
+
+.lede {
+  color: var(--ink);
+  font-size: clamp(17px, 1.6vw, 20px);
+  line-height: 1.45;
+}
+
 .card p:last-child { margin-bottom: 0; }
 
 .meta {

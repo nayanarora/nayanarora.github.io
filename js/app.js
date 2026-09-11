@@ -74,6 +74,7 @@ function sheets(scene, pager) {
   if (!dialog || !body) return;
 
   const overflows = () => body.scrollHeight > body.clientHeight + 1;
+  const onHandle = (el) => el.closest?.(".sheet__bar, .sheet__handle");
 
   const lockPage = () => {
     document.documentElement.classList.add("is-locked");
@@ -81,6 +82,11 @@ function sheets(scene, pager) {
 
   const unlockPage = () => {
     document.documentElement.classList.remove("is-locked");
+  };
+
+  const resetSheet = () => {
+    dialog.classList.remove("is-dragging");
+    dialog.style.transform = "";
   };
 
   const blockIfNeeded = (event, deltaY) => {
@@ -104,27 +110,80 @@ function sheets(scene, pager) {
     { passive: false }
   );
 
-  let touchY = 0;
-  document.addEventListener(
+  let startY = 0;
+  let startX = 0;
+  let lastY = 0;
+  let lastT = 0;
+  let vel = 0;
+  let dragging = false;
+  let fromHandle = false;
+
+  dialog.addEventListener(
     "touchstart",
     (event) => {
-      touchY = event.touches[0]?.clientY ?? 0;
+      if (!dialog.open) return;
+      startY = event.touches[0]?.clientY ?? 0;
+      startX = event.touches[0]?.clientX ?? 0;
+      lastY = startY;
+      lastT = Date.now();
+      vel = 0;
+      dragging = false;
+      fromHandle = Boolean(onHandle(event.target));
     },
     { passive: true }
   );
-  document.addEventListener(
+
+  dialog.addEventListener(
     "touchmove",
     (event) => {
       if (!dialog.open) return;
       const y = event.touches[0]?.clientY ?? 0;
-      blockIfNeeded(event, touchY - y);
+      const x = event.touches[0]?.clientX ?? 0;
+      const dy = y - startY;
+      const dx = x - startX;
+      const now = Date.now();
+      vel = (y - lastY) / Math.max(now - lastT, 1);
+      lastY = y;
+      lastT = now;
+
+      const pullingDown = dy > 10 && dy > Math.abs(dx);
+      const canDrag = fromHandle || (body.scrollTop <= 0 && pullingDown);
+
+      if (!canDrag) {
+        blockIfNeeded(event, startY - y);
+        return;
+      }
+
+      dragging = true;
+      event.preventDefault();
+      dialog.classList.add("is-dragging");
+      dialog.style.transform = `translateY(${Math.max(0, dy)}px)`;
     },
     { passive: false }
+  );
+
+  dialog.addEventListener(
+    "touchend",
+    () => {
+      if (!dialog.open) return;
+      const dy = lastY - startY;
+      const tapHandle = fromHandle && !dragging && Math.abs(dy) < 12;
+      const flick = dragging && (dy > 88 || vel > 0.55);
+      dialog.classList.remove("is-dragging");
+      if (tapHandle || flick) {
+        dialog.style.transform = "translateY(110%)";
+        window.setTimeout(close, 240);
+        return;
+      }
+      dialog.style.transform = "";
+    },
+    { passive: true }
   );
 
   const close = () => {
     if (dialog.open) dialog.close();
     else dialog.removeAttribute("open");
+    resetSheet();
     unlockPage();
     if (scene) scene.quiet = false;
     const section = pager?.id() || "";
@@ -140,11 +199,15 @@ function sheets(scene, pager) {
     body.replaceChildren(src.content.cloneNode(true));
     if (scene) scene.quiet = true;
     lockPage();
+    resetSheet();
     if (typeof dialog.showModal === "function") dialog.showModal();
     else dialog.setAttribute("open", "");
     body.scrollTop = 0;
     history.replaceState(null, "", `#d-${id}`);
-    dialog.querySelector(".sheet__close")?.focus({ preventScroll: true });
+    const focusEl = window.matchMedia("(max-width: 700px)").matches
+      ? dialog.querySelector(".sheet__handle")
+      : dialog.querySelector(".sheet__close");
+    focusEl?.focus({ preventScroll: true });
   };
 
   $$("[data-open]").forEach((btn) => {
@@ -152,6 +215,7 @@ function sheets(scene, pager) {
   });
 
   dialog.querySelector(".sheet__close")?.addEventListener("click", close);
+  dialog.querySelector(".sheet__handle")?.addEventListener("click", close);
   dialog.addEventListener("click", (e) => {
     if (e.target === dialog) close();
   });

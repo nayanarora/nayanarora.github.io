@@ -4,13 +4,12 @@ import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
 import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 
-const CLOUD = "#f0eee9";
 const PALETTES = [
-  { a: new THREE.Color("#e6e4df"), b: new THREE.Color(CLOUD) },
-  { a: new THREE.Color("#eceae5"), b: new THREE.Color("#f7f6f2") },
-  { a: new THREE.Color("#e8e6e1"), b: new THREE.Color(CLOUD) },
-  { a: new THREE.Color("#f4f2ed"), b: new THREE.Color("#fbfaf7") },
-  { a: new THREE.Color("#ebe9e4"), b: new THREE.Color(CLOUD) }
+  { a: new THREE.Color("#163a5c"), b: new THREE.Color("#3d7ea3") },
+  { a: new THREE.Color("#1c2a38"), b: new THREE.Color("#8a9aaa") },
+  { a: new THREE.Color("#12324a"), b: new THREE.Color("#4aa3c7") },
+  { a: new THREE.Color("#1a2836"), b: new THREE.Color("#c4a86a") },
+  { a: new THREE.Color("#14283c"), b: new THREE.Color("#2f6f93") }
 ];
 
 function hash(i) {
@@ -18,22 +17,121 @@ function hash(i) {
   return x - Math.floor(x);
 }
 
-function neuralLayers(count) {
+function ellipsoid(u, v, rx, ry, rz) {
+  const theta = u * Math.PI * 2;
+  const phi = Math.acos(2 * v - 1);
+  return [
+    rx * Math.sin(phi) * Math.cos(theta),
+    ry * Math.cos(phi),
+    rz * Math.sin(phi) * Math.sin(theta)
+  ];
+}
+
+function brainTracts(count) {
   const pts = new Float32Array(count * 3);
-  const sizes = [10, 16, 22, 16, 10];
+  const fibers = 56;
+  const per = Math.floor(count / fibers);
+  let n = 0;
+  for (let f = 0; f < fibers; f++) {
+    const a = ellipsoid(hash(f), hash(f + 19), 2.35, 1.55, 1.9);
+    const c = ellipsoid(hash(f + 7), hash(f + 29), 2.35, 1.55, 1.9);
+    const hx = (hash(f + 3) - 0.5) * 0.55;
+    const hy = (hash(f + 5) - 0.5) * 0.35;
+    const hz = (hash(f + 11) - 0.5) * 0.45;
+    for (let i = 0; i < per && n < count; i++) {
+      const t = i / Math.max(per - 1, 1);
+      const mt = 1 - t;
+      const wob = Math.sin(t * 14 + f) * 0.07;
+      pts[n * 3] = mt * mt * a[0] + 2 * mt * t * hx + t * t * c[0] + wob * (hash(n) - 0.5);
+      pts[n * 3 + 1] = mt * mt * a[1] + 2 * mt * t * hy + t * t * c[1] + wob * (hash(n + 1) - 0.5);
+      pts[n * 3 + 2] = mt * mt * a[2] + 2 * mt * t * hz + t * t * c[2] + wob * (hash(n + 2) - 0.5);
+      n += 1;
+    }
+  }
+  while (n < count) {
+    pts[n * 3] = (hash(n) - 0.5) * 7;
+    pts[n * 3 + 1] = (hash(n + 4) - 0.5) * 5;
+    pts[n * 3 + 2] = (hash(n + 8) - 0.5) * 6;
+    n += 1;
+  }
+  return pts;
+}
+
+function connectome(count) {
+  const pts = new Float32Array(count * 3);
+  const golden = Math.PI * (3 - Math.sqrt(5));
+  for (let i = 0; i < count; i++) {
+    const y = 1 - (i / Math.max(count - 1, 1)) * 2;
+    const r = Math.sqrt(Math.max(0, 1 - y * y));
+    const theta = golden * i;
+    const j = (hash(i) - 0.5) * 0.08;
+    pts[i * 3] = Math.cos(theta) * r * 2.25 + j;
+    pts[i * 3 + 1] = y * 1.5 + j * 0.4;
+    pts[i * 3 + 2] = Math.sin(theta) * r * 1.85 + j;
+  }
+  return pts;
+}
+
+function hubNetwork(count) {
+  const pts = new Float32Array(count * 3);
+  const hubs = [
+    [0.0, 0.15, 0.0],
+    [1.6, 0.55, 0.35],
+    [-1.35, 0.7, -0.2],
+    [1.15, -0.75, 0.55],
+    [-1.05, -0.65, 0.4],
+    [0.35, 1.15, -0.7],
+    [-0.15, -1.2, -0.45],
+    [2.05, 0.05, -0.55],
+    [-1.85, 0.1, 0.65]
+  ];
+  for (let i = 0; i < count; i++) {
+    const a = hubs[i % hubs.length];
+    const b = hubs[(i + 3) % hubs.length];
+    const t = hash(i);
+    const mt = 1 - t;
+    const bow = Math.sin(t * Math.PI) * (0.35 + hash(i + 6) * 0.5);
+    pts[i * 3] = mt * a[0] + t * b[0] + bow * (hash(i + 2) - 0.5);
+    pts[i * 3 + 1] = mt * a[1] + t * b[1] + bow * (hash(i + 4) - 0.5);
+    pts[i * 3 + 2] = mt * a[2] + t * b[2] + bow * (hash(i + 8) - 0.5);
+  }
+  return pts;
+}
+
+function circuitBrain(count) {
+  const pts = new Float32Array(count * 3);
+  for (let i = 0; i < count; i++) {
+    const lobe = i % 2 === 0 ? -1 : 1;
+    const u = hash(i);
+    const v = hash(i + 13);
+    const [x, y, z] = ellipsoid(u, v, 1.15, 1.45, 1.2);
+    const gx = Math.round(x * 5) / 5;
+    const gy = Math.round(y * 5) / 5;
+    const gz = Math.round(z * 4) / 4;
+    const mix = 0.72;
+    pts[i * 3] = (gx * mix + x * (1 - mix)) + lobe * 1.05;
+    pts[i * 3 + 1] = gy * mix + y * (1 - mix);
+    pts[i * 3 + 2] = gz * mix + z * (1 - mix);
+  }
+  return pts;
+}
+
+function layeredNet(count) {
+  const pts = new Float32Array(count * 3);
+  const sizes = [8, 14, 20, 14, 8];
   const sum = sizes.reduce((a, b) => a + b, 0);
   let n = 0;
   for (let L = 0; L < sizes.length; L++) {
     const share = Math.floor((count * sizes[L]) / sum);
-    const x = (L / (sizes.length - 1) - 0.5) * 5.4;
+    const x = (L / (sizes.length - 1) - 0.5) * 4.6;
     const cols = Math.ceil(Math.sqrt(share));
     for (let i = 0; i < share && n < count; i++) {
       const gx = (i % cols) / Math.max(cols - 1, 1) - 0.5;
       const gy = Math.floor(i / cols) / Math.max(cols - 1, 1) - 0.5;
-      const j = (hash(n) - 0.5) * 0.16;
-      pts[n * 3] = x + j * 0.4;
-      pts[n * 3 + 1] = gy * 3.1 + j;
-      pts[n * 3 + 2] = gx * 3.1 - j * 0.5;
+      const j = (hash(n) - 0.5) * 0.12;
+      pts[n * 3] = x + j * 0.3;
+      pts[n * 3 + 1] = gy * 2.6 + j;
+      pts[n * 3 + 2] = gx * 2.6 - j * 0.4;
       n += 1;
     }
   }
@@ -46,83 +144,13 @@ function neuralLayers(count) {
   return pts;
 }
 
-function robotArm(count) {
-  const pts = new Float32Array(count * 3);
-  const joints = [
-    [0.0, -1.3, 0.0],
-    [0.55, 0.15, 0.35],
-    [1.45, 1.05, -0.15],
-    [2.25, 0.35, 0.55],
-    [2.55, -0.15, 0.9]
-  ];
-  for (let i = 0; i < count; i++) {
-    const t = i / count;
-    const x = t * (joints.length - 1);
-    const s = Math.min(joints.length - 2, Math.floor(x));
-    const f = x - s;
-    const a = joints[s];
-    const b = joints[s + 1];
-    const j = (hash(i) - 0.5) * 0.28;
-    const k = (hash(i + 11) - 0.5) * 0.28;
-    pts[i * 3] = a[0] + (b[0] - a[0]) * f + j;
-    pts[i * 3 + 1] = a[1] + (b[1] - a[1]) * f + k * 0.6;
-    pts[i * 3 + 2] = a[2] + (b[2] - a[2]) * f + k;
-  }
-  return pts;
-}
-
-function featureMaps(count) {
-  const pts = new Float32Array(count * 3);
-  const depth = 5;
-  const side = Math.ceil(Math.sqrt(count / depth));
-  for (let i = 0; i < count; i++) {
-    const z = Math.floor(i / (side * side));
-    const rem = i % (side * side);
-    const x = (rem % side) / side - 0.5;
-    const y = Math.floor(rem / side) / side - 0.5;
-    pts[i * 3] = x * 4.6;
-    pts[i * 3 + 1] = (z / depth - 0.5) * 2.4;
-    pts[i * 3 + 2] = y * 4.6;
-  }
-  return pts;
-}
-
-function recurrent(count) {
-  const pts = new Float32Array(count * 3);
-  for (let i = 0; i < count; i++) {
-    const loop = i % 3;
-    const t = (i / count) * Math.PI * 10;
-    const r = 1.15 + loop * 0.55;
-    const tilt = 0.55 + loop * 0.4;
-    pts[i * 3] = Math.cos(t) * r;
-    pts[i * 3 + 1] = Math.sin(t * (1.2 + loop * 0.35)) * 0.85;
-    pts[i * 3 + 2] = Math.sin(t) * r * Math.cos(tilt) + Math.cos(t * 0.4) * 0.3;
-  }
-  return pts;
-}
-
-function attention(count) {
-  const pts = new Float32Array(count * 3);
-  for (let i = 0; i < count; i++) {
-    const head = i % 4;
-    const ang = (i / count) * Math.PI * 8 + head * 0.7;
-    const rad = 0.55 + (hash(i) * 1.8);
-    const ox = (head % 2 === 0 ? -1.3 : 1.3);
-    const oy = (head < 2 ? 0.7 : -0.7);
-    pts[i * 3] = ox + Math.cos(ang) * rad * 0.7;
-    pts[i * 3 + 1] = oy + (hash(i + 5) - 0.5) * 1.4;
-    pts[i * 3 + 2] = Math.sin(ang) * rad * 0.7;
-  }
-  return pts;
-}
-
 export class World {
   constructor(canvas) {
     this.canvas = canvas;
     this.reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     this.mobile = window.matchMedia("(max-width: 900px)").matches;
     this.quiet = false;
-    this.count = this.mobile ? 1400 : 3200;
+    this.count = this.mobile ? 1100 : 2400;
     this.progress = 0;
     this.pointer = new THREE.Vector2(0, 0);
     this.clock = new THREE.Clock();
@@ -139,29 +167,28 @@ export class World {
       alpha: true,
       powerPreference: "high-performance"
     });
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, this.mobile ? 1.2 : 1.6));
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, this.mobile ? 1.2 : 1.5));
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
     this.renderer.toneMapping = THREE.NoToneMapping;
-    this.renderer.toneMappingExposure = 1;
+    this.renderer.setClearColor(0x000000, 0);
 
     this.scene = new THREE.Scene();
-    this.camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 80);
-    this.camera.position.set(0.4, 0.15, 6.1);
-
-    this.scene.add(new THREE.AmbientLight(0xf0eee9, 0.85));
+    this.camera = new THREE.PerspectiveCamera(38, window.innerWidth / window.innerHeight, 0.1, 80);
+    this.camera.position.set(0.15, 0.08, 7.2);
 
     this.group = new THREE.Group();
+    this.group.position.set(1.15, 0.05, 0);
     this.scene.add(this.group);
 
-    this.neuronCount = this.mobile ? 26 : 52;
+    this.neuronCount = this.mobile ? 14 : 22;
     const soma = new THREE.MeshBasicMaterial({
-      color: 0xf0eee9,
+      color: 0xc4a86a,
       transparent: true,
-      opacity: 0.92
+      opacity: 0.55
     });
     this.neurons = new THREE.InstancedMesh(
-      new THREE.SphereGeometry(0.055, 10, 10),
+      new THREE.SphereGeometry(0.032, 8, 8),
       soma,
       this.neuronCount
     );
@@ -170,24 +197,24 @@ export class World {
     this._dummy = new THREE.Object3D();
 
     this.targets = [
-      neuralLayers(count),
-      robotArm(count),
-      featureMaps(count),
-      recurrent(count),
-      attention(count)
+      brainTracts(count),
+      connectome(count),
+      hubNetwork(count),
+      circuitBrain(count),
+      layeredNet(count)
     ];
     this.current = this.targets[0].slice(0);
 
     const geo = new THREE.BufferGeometry();
     geo.setAttribute("position", new THREE.BufferAttribute(this.current, 3));
     const sizes = new Float32Array(count);
-    for (let i = 0; i < count; i++) sizes[i] = hash(i) * 1.15 + 0.35;
+    for (let i = 0; i < count; i++) sizes[i] = hash(i) * 0.55 + 0.22;
     geo.setAttribute("aSize", new THREE.BufferAttribute(sizes, 1));
 
     this.pointsMat = new THREE.ShaderMaterial({
       uniforms: {
         uTime: { value: 0 },
-        uColor: { value: new THREE.Color("#f0eee9") },
+        uColor: { value: new THREE.Color("#3d7ea3") },
         uPixelRatio: { value: Math.min(window.devicePixelRatio, 2) }
       },
       vertexShader: /* glsl */ `
@@ -197,15 +224,15 @@ export class World {
         varying float vAlpha;
         void main() {
           vec3 p = position;
-          p += 0.028 * vec3(
-            sin(uTime * 0.35 + position.y * 1.4),
-            sin(uTime * 0.22 + position.x * 1.1),
-            cos(uTime * 0.28 + position.z * 0.9)
+          p += 0.012 * vec3(
+            sin(uTime * 0.22 + position.y * 1.1),
+            sin(uTime * 0.16 + position.x * 0.9),
+            cos(uTime * 0.18 + position.z * 0.8)
           );
           vec4 mv = modelViewMatrix * vec4(p, 1.0);
           gl_Position = projectionMatrix * mv;
-          gl_PointSize = aSize * uPixelRatio * (64.0 / -mv.z);
-          vAlpha = clamp(2.4 / length(mv.xyz), 0.35, 0.95);
+          gl_PointSize = aSize * uPixelRatio * (26.0 / -mv.z);
+          vAlpha = clamp(1.15 / length(mv.xyz), 0.08, 0.38);
         }
       `,
       fragmentShader: /* glsl */ `
@@ -215,19 +242,18 @@ export class World {
           vec2 uv = gl_PointCoord - 0.5;
           float d = length(uv);
           if (d > 0.5) discard;
-          float matte = smoothstep(0.5, 0.12, d);
+          float matte = smoothstep(0.5, 0.2, d);
           gl_FragColor = vec4(uColor, matte * vAlpha);
         }
       `,
       transparent: true,
-      blending: THREE.NormalBlending,
       depthWrite: false
     });
 
     this.points = new THREE.Points(geo, this.pointsMat);
     this.group.add(this.points);
 
-    const lineCount = this.mobile ? 160 : 280;
+    const lineCount = this.mobile ? 220 : 420;
     this.lineCount = lineCount;
     this.linePos = new Float32Array(lineCount * 6);
     const lineGeo = new THREE.BufferGeometry();
@@ -235,9 +261,9 @@ export class World {
     this.lines = new THREE.LineSegments(
       lineGeo,
       new THREE.LineBasicMaterial({
-        color: 0xf0eee9,
+        color: 0x2f6f93,
         transparent: true,
-        opacity: 0.28,
+        opacity: 0.16,
         depthWrite: false
       })
     );
@@ -247,9 +273,9 @@ export class World {
     this.composer.addPass(new RenderPass(this.scene, this.camera));
     this.bloomPass = new UnrealBloomPass(
       new THREE.Vector2(window.innerWidth, window.innerHeight),
-      0.04,
-      0.55,
-      0.88
+      0.035,
+      0.5,
+      0.82
     );
     this.composer.addPass(this.bloomPass);
     this.composer.addPass(new OutputPass());
@@ -282,8 +308,7 @@ export class World {
     for (let i = 0; i < this.neuronCount; i++) {
       const idx = Math.min(i * step, this.count - 1);
       this._dummy.position.set(src[idx * 3], src[idx * 3 + 1], src[idx * 3 + 2]);
-      const s = 0.75 + hash(i) * 0.7;
-      this._dummy.scale.setScalar(s);
+      this._dummy.scale.setScalar(0.55 + hash(i) * 0.45);
       this._dummy.updateMatrix();
       this.neurons.setMatrixAt(i, this._dummy.matrix);
     }
@@ -309,17 +334,16 @@ export class World {
     this.colorB.lerpColors(palA.b, palB.b, f);
     this.pointsMat.uniforms.uColor.value.copy(this.colorB);
     this.neurons.material.color.copy(this.colorB);
-    this.lines.material.color.copy(this.colorB);
+    this.lines.material.color.copy(this.colorA);
     this._placeNeurons();
   }
 
   _lines() {
     const src = this.current;
     const dst = this.linePos;
-    const stride = Math.max(2, Math.floor(this.count / this.lineCount));
     for (let i = 0; i < this.lineCount; i++) {
-      const a = Math.min(i * stride, this.count - 1);
-      const b = Math.min(a + 1 + (i % 5), this.count - 1);
+      const a = Math.min(i * Math.floor(this.count / this.lineCount), this.count - 2);
+      const b = Math.min(a + 1, this.count - 1);
       const o = i * 6;
       dst[o] = src[a * 3];
       dst[o + 1] = src[a * 3 + 1];
@@ -362,15 +386,13 @@ export class World {
     }
     this._lines();
 
-    const rot = this.reduced ? 0 : t * 0.045;
-    this.group.rotation.y = rot + this.pointer.x * 0.16;
-    this.group.rotation.x = this.pointer.y * 0.07 + Math.sin(t * 0.12) * 0.04;
+    const rot = this.reduced ? 0 : t * 0.028;
+    this.group.rotation.y = rot + this.pointer.x * 0.1;
+    this.group.rotation.x = this.pointer.y * 0.05 + Math.sin(t * 0.09) * 0.03;
 
-    const z = 6.1 - p * 0.55;
-    const y = 0.12 + Math.sin(p * Math.PI) * 0.14;
-    this.camera.position.z += (z - this.camera.position.z) * 0.05;
-    this.camera.position.y += (y - this.camera.position.y) * 0.05;
-    this.camera.lookAt(0, 0, 0);
+    const z = 7.2 - p * 0.4;
+    this.camera.position.z += (z - this.camera.position.z) * 0.04;
+    this.camera.lookAt(0.55, 0, 0);
 
     this.bloomPass.strength = 0.03;
     this.composer.render();

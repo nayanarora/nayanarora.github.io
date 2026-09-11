@@ -6,7 +6,7 @@
   --grey: #cfc6bc;
   --dim: #9a9188;
   --cloud: #f0eee9;
-  --matte: #f0eee9;
+  --matte: #9eb8c4;
   --font: "IBM Plex Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
   --safe-top: env(safe-area-inset-top, 0px);
@@ -78,6 +78,7 @@ button:focus-visible {
   inset: 0;
   z-index: 0;
   pointer-events: none;
+  opacity: 0.55;
 }
 
 .mark {
@@ -246,7 +247,7 @@ button:focus-visible {
   font-size: clamp(32px, 5vw, 56px);
   font-weight: 500;
   letter-spacing: -0.04em;
-  text-shadow: 0 2px 22px rgba(0, 0, 0, 0.35);
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.85), 0 0 32px rgba(0, 0, 0, 0.55);
 }
 
 .copy p,
@@ -254,7 +255,7 @@ button:focus-visible {
   margin: 0 0 12px;
   color: var(--grey);
   max-width: 58ch;
-  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.4);
+  text-shadow: 0 1px 14px rgba(0, 0, 0, 0.8), 0 0 24px rgba(0, 0, 0, 0.45);
 }
 
 .role {

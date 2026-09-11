@@ -1,4 +1,4 @@
-import { World } from "./scene.js";
+import { World } from "./scene.js?v=cloud1";
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
@@ -346,39 +346,9 @@ function hashRoute(pager, sheetApi) {
   pager?.go(raw, { instant: true });
 }
 
-function contactCopy() {
-  $$("[data-copy]").forEach((btn) => {
-    const hint = btn.querySelector("[data-copy-hint]");
-    const original = hint?.textContent || "";
-    btn.addEventListener("click", async () => {
-      const value = btn.dataset.copy || "";
-      try {
-        await navigator.clipboard.writeText(value);
-      } catch {
-        const field = document.createElement("textarea");
-        field.value = value;
-        field.setAttribute("readonly", "");
-        field.style.position = "fixed";
-        field.style.opacity = "0";
-        document.body.appendChild(field);
-        field.select();
-        document.execCommand("copy");
-        field.remove();
-      }
-      btn.classList.add("is-done");
-      if (hint) hint.textContent = "Copied";
-      window.setTimeout(() => {
-        btn.classList.remove("is-done");
-        if (hint) hint.textContent = original;
-      }, 1600);
-    });
-  });
-}
-
 const scene = world();
 appear();
 const pager = modules(scene);
 const sheetApi = sheets(scene, pager);
-contactCopy();
 hashRoute(pager, sheetApi);
 window.addEventListener("hashchange", () => hashRoute(pager, sheetApi));

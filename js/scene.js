@@ -4,12 +4,13 @@ import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
 import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 
+const CLOUD = "#f0eee9";
 const PALETTES = [
-  { a: new THREE.Color("#d4d1cb"), b: new THREE.Color("#f0eee9") },
-  { a: new THREE.Color("#c8c5bf"), b: new THREE.Color("#e8e6e1") },
-  { a: new THREE.Color("#dcd8d1"), b: new THREE.Color("#f4f2ed") },
-  { a: new THREE.Color("#ccc9c3"), b: new THREE.Color("#ebe8e2") },
-  { a: new THREE.Color("#d8d5cf"), b: new THREE.Color("#f0eee9") }
+  { a: new THREE.Color("#e6e4df"), b: new THREE.Color(CLOUD) },
+  { a: new THREE.Color("#eceae5"), b: new THREE.Color("#f7f6f2") },
+  { a: new THREE.Color("#e8e6e1"), b: new THREE.Color(CLOUD) },
+  { a: new THREE.Color("#f4f2ed"), b: new THREE.Color("#fbfaf7") },
+  { a: new THREE.Color("#ebe9e4"), b: new THREE.Color(CLOUD) }
 ];
 
 function hash(i) {
@@ -148,22 +149,16 @@ export class World {
     this.camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 80);
     this.camera.position.set(0.4, 0.15, 6.1);
 
-    this.scene.add(new THREE.HemisphereLight(0xf0eee9, 0x0b0a09, 0.62));
-    const key = new THREE.DirectionalLight(0xf0eee9, 0.42);
-    key.position.set(3.2, 2.4, 4);
-    this.scene.add(key);
-    const fill = new THREE.DirectionalLight(0x9a9790, 0.18);
-    fill.position.set(-4, -1.2, 1.5);
-    this.scene.add(fill);
+    this.scene.add(new THREE.AmbientLight(0xf0eee9, 0.85));
 
     this.group = new THREE.Group();
     this.scene.add(this.group);
 
     this.neuronCount = this.mobile ? 26 : 52;
-    const soma = new THREE.MeshStandardMaterial({
+    const soma = new THREE.MeshBasicMaterial({
       color: 0xf0eee9,
-      roughness: 0.94,
-      metalness: 0.02
+      transparent: true,
+      opacity: 0.92
     });
     this.neurons = new THREE.InstancedMesh(
       new THREE.SphereGeometry(0.055, 10, 10),
@@ -210,7 +205,7 @@ export class World {
           vec4 mv = modelViewMatrix * vec4(p, 1.0);
           gl_Position = projectionMatrix * mv;
           gl_PointSize = aSize * uPixelRatio * (64.0 / -mv.z);
-          vAlpha = clamp(1.7 / length(mv.xyz), 0.12, 0.72);
+          vAlpha = clamp(2.4 / length(mv.xyz), 0.35, 0.95);
         }
       `,
       fragmentShader: /* glsl */ `
@@ -225,6 +220,7 @@ export class World {
         }
       `,
       transparent: true,
+      blending: THREE.NormalBlending,
       depthWrite: false
     });
 
@@ -241,20 +237,19 @@ export class World {
       new THREE.LineBasicMaterial({
         color: 0xf0eee9,
         transparent: true,
-        opacity: 0.16,
+        opacity: 0.28,
         depthWrite: false
       })
     );
     this.group.add(this.lines);
 
-    const bloom = this.mobile || this.reduced ? 0.08 : 0.12;
     this.composer = new EffectComposer(this.renderer);
     this.composer.addPass(new RenderPass(this.scene, this.camera));
     this.bloomPass = new UnrealBloomPass(
       new THREE.Vector2(window.innerWidth, window.innerHeight),
-      bloom,
-      0.4,
-      0.35
+      0.04,
+      0.55,
+      0.88
     );
     this.composer.addPass(this.bloomPass);
     this.composer.addPass(new OutputPass());
@@ -354,7 +349,7 @@ export class World {
     this.pointsMat.uniforms.uTime.value = t;
 
     if (this.quiet) {
-      this.bloomPass.strength = 0.06;
+      this.bloomPass.strength = 0.02;
       this.composer.render();
       return;
     }
@@ -377,7 +372,7 @@ export class World {
     this.camera.position.y += (y - this.camera.position.y) * 0.05;
     this.camera.lookAt(0, 0, 0);
 
-    this.bloomPass.strength = this.mobile || this.reduced ? 0.06 : 0.1;
+    this.bloomPass.strength = 0.03;
     this.composer.render();
   };
 }

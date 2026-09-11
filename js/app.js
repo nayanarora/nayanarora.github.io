@@ -72,7 +72,8 @@ function sheets(scene) {
   if (!dialog || !body) return;
 
   const close = () => {
-    dialog.close();
+    if (dialog.open) dialog.close();
+    else dialog.removeAttribute("open");
     if (scene) scene.quiet = false;
     const section = location.hash && !location.hash.startsWith("#d-")
       ? location.hash
@@ -84,7 +85,7 @@ function sheets(scene) {
   const open = (id) => {
     const src = document.getElementById(`detail-${id}`);
     if (!src) return;
-    body.innerHTML = src.innerHTML;
+    body.replaceChildren(src.content.cloneNode(true));
     if (typeof dialog.showModal === "function") dialog.showModal();
     else dialog.setAttribute("open", "");
     if (scene) scene.quiet = true;

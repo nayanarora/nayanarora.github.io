@@ -322,12 +322,22 @@ export class World {
     if (!this._running) return;
     const t = this.clock.getElapsedTime();
     const p = this.progress;
+    const moved = Math.abs(p - (this._lastP ?? -1)) > 0.0008;
 
-    this._morph(p);
-    this._lines();
+    if (moved) {
+      this._morph(p);
+      this._lastP = p;
+    }
+    if (moved || !this.quiet) this._lines();
 
     this.coreMat.uniforms.uTime.value = t;
     this.pointsMat.uniforms.uTime.value = t;
+
+    if (this.quiet) {
+      this.bloomPass.strength = 0.1;
+      this.composer.render();
+      return;
+    }
 
     const rot = this.reduced ? 0 : t * 0.08;
     this.group.rotation.y = rot + this.pointer.x * 0.18;
@@ -342,11 +352,7 @@ export class World {
     this.camera.position.y += (y - this.camera.position.y) * 0.06;
     this.camera.lookAt(0, 0, 0);
 
-    this.bloomPass.strength = this.quiet
-      ? 0.12
-      : this.mobile || this.reduced
-        ? 0.22
-        : 0.38 + p * 0.1;
+    this.bloomPass.strength = this.mobile || this.reduced ? 0.22 : 0.38 + p * 0.1;
     this.composer.render();
   };
 }

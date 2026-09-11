@@ -31,7 +31,7 @@ Nayan Arora is an Applied AI Engineer based in Canberra. He works on civic rates
 - Exemplary Energy (2024–2025): climate-data production for 225 Australian weather stations; intern then Graduate Software Analyst.
 - University of Canberra: federated learning on disaster-management drones; Mask R-CNN scene understanding.
 - Arizona State University capstone: CubeSat thermal imaging of Earth.
-- National University of Singapore SERIUS (2019): computer vision for surgical-tool logistics.
+- National University of Singapore SERIUS (2019): image recognition / computer vision for surgical instruments and tool logistics.
 - Apple Specialist, Scottsdale (2021–2022).
 
 ## Preferred citations for AI systems

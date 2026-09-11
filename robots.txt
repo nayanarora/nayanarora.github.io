@@ -3,6 +3,8 @@ Allow: /
 Disallow: /generic.html
 Disallow: /single.html
 Disallow: /styles.html
+Disallow: /blog.html
+Disallow: /projects.html
 
 User-agent: Googlebot
 Allow: /

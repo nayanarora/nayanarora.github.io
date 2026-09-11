@@ -5,10 +5,7 @@ const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
 
 function bootLoader() {
   const loader = $(".loader");
-  const hide = () => loader?.classList.add("is-done");
-  if (document.readyState === "complete") setTimeout(hide, 280);
-  else window.addEventListener("load", () => setTimeout(hide, 280));
-  setTimeout(hide, 1800);
+  loader?.classList.add("is-done");
 }
 
 function nav() {
@@ -52,6 +49,7 @@ function world() {
   } catch (err) {
     console.warn("WebGL scene unavailable", err);
     canvas.remove();
+    document.body.classList.add("no-webgl");
     return null;
   }
 }

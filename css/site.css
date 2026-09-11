@@ -55,6 +55,10 @@ html.is-locked body {
   width: 100%;
 }
 
+html.is-locked .frame {
+  pointer-events: none;
+}
+
 a { color: var(--ink); text-decoration: none; }
 a:hover { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
 img { max-width: 100%; height: auto; display: block; }

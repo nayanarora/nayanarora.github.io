@@ -263,6 +263,7 @@ export class World {
   }
 
   setProgress(t) {
+    if (this.quiet) return;
     this.progress = THREE.MathUtils.clamp(t, 0, 1);
   }
 
@@ -322,15 +323,6 @@ export class World {
     requestAnimationFrame(this.tick);
     if (!this._running) return;
     const t = this.clock.getElapsedTime();
-    const p = this.progress;
-    const moved = Math.abs(p - (this._lastP ?? -1)) > 0.0008;
-
-    if (moved) {
-      this._morph(p);
-      this._lastP = p;
-    }
-    if (moved || !this.quiet) this._lines();
-
     this.coreMat.uniforms.uTime.value = t;
     this.pointsMat.uniforms.uTime.value = t;
 
@@ -339,6 +331,15 @@ export class World {
       this.composer.render();
       return;
     }
+
+    const p = this.progress;
+    const moved = Math.abs(p - (this._lastP ?? -1)) > 0.0008;
+
+    if (moved) {
+      this._morph(p);
+      this._lastP = p;
+    }
+    this._lines();
 
     const rot = this.reduced ? 0 : t * 0.08;
     this.group.rotation.y = rot + this.pointer.x * 0.18;

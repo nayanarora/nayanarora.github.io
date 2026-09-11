@@ -9,6 +9,7 @@ function world() {
   try {
     const w = new World(canvas);
     const update = () => {
+      if (document.documentElement.classList.contains("is-locked")) return;
       const max = document.documentElement.scrollHeight - window.innerHeight;
       w.setProgress(max > 0 ? window.scrollY / max : 0);
     };
@@ -154,11 +155,11 @@ function sheets(scene) {
     const src = document.getElementById(`detail-${id}`);
     if (!src) return;
     body.replaceChildren(src.content.cloneNode(true));
+    if (scene) scene.quiet = true;
     lockPage();
     if (typeof dialog.showModal === "function") dialog.showModal();
     else dialog.setAttribute("open", "");
     body.scrollTop = 0;
-    if (scene) scene.quiet = true;
     history.replaceState(null, "", `#d-${id}`);
     $(".sheet .sheet__close")?.focus();
   };

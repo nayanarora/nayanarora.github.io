@@ -5,11 +5,11 @@ import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js"
 import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 
 const PALETTES = [
-  { a: new THREE.Color("#c4b6a8"), b: new THREE.Color("#c56a2c") },
-  { a: new THREE.Color("#8d867c"), b: new THREE.Color("#a8521f") },
-  { a: new THREE.Color("#d2c4b4"), b: new THREE.Color("#b8612e") },
-  { a: new THREE.Color("#9a938a"), b: new THREE.Color("#8f4a24") },
-  { a: new THREE.Color("#cfc6bc"), b: new THREE.Color("#d4783a") }
+  { a: new THREE.Color("#d4d1cb"), b: new THREE.Color("#f0eee9") },
+  { a: new THREE.Color("#c8c5bf"), b: new THREE.Color("#e8e6e1") },
+  { a: new THREE.Color("#dcd8d1"), b: new THREE.Color("#f4f2ed") },
+  { a: new THREE.Color("#ccc9c3"), b: new THREE.Color("#ebe8e2") },
+  { a: new THREE.Color("#d8d5cf"), b: new THREE.Color("#f0eee9") }
 ];
 
 function hash(i) {
@@ -148,11 +148,11 @@ export class World {
     this.camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 80);
     this.camera.position.set(0.4, 0.15, 6.1);
 
-    this.scene.add(new THREE.HemisphereLight(0x2a241e, 0x0c0a08, 0.85));
-    const key = new THREE.DirectionalLight(0xe0b089, 0.7);
+    this.scene.add(new THREE.HemisphereLight(0xf0eee9, 0x0b0a09, 0.62));
+    const key = new THREE.DirectionalLight(0xf0eee9, 0.42);
     key.position.set(3.2, 2.4, 4);
     this.scene.add(key);
-    const fill = new THREE.DirectionalLight(0x6a4a32, 0.28);
+    const fill = new THREE.DirectionalLight(0x9a9790, 0.18);
     fill.position.set(-4, -1.2, 1.5);
     this.scene.add(fill);
 
@@ -161,9 +161,9 @@ export class World {
 
     this.neuronCount = this.mobile ? 26 : 52;
     const soma = new THREE.MeshStandardMaterial({
-      color: 0xc56a2c,
-      roughness: 0.9,
-      metalness: 0.06
+      color: 0xf0eee9,
+      roughness: 0.94,
+      metalness: 0.02
     });
     this.neurons = new THREE.InstancedMesh(
       new THREE.SphereGeometry(0.055, 10, 10),
@@ -192,7 +192,7 @@ export class World {
     this.pointsMat = new THREE.ShaderMaterial({
       uniforms: {
         uTime: { value: 0 },
-        uColor: { value: new THREE.Color("#c56a2c") },
+        uColor: { value: new THREE.Color("#f0eee9") },
         uPixelRatio: { value: Math.min(window.devicePixelRatio, 2) }
       },
       vertexShader: /* glsl */ `
@@ -202,10 +202,10 @@ export class World {
         varying float vAlpha;
         void main() {
           vec3 p = position;
-          p += 0.018 * vec3(
-            sin(uTime * 0.7 + position.y * 2.1),
-            sin(uTime * 0.45 + position.x * 1.7),
-            cos(uTime * 0.55 + position.z * 1.4)
+          p += 0.028 * vec3(
+            sin(uTime * 0.35 + position.y * 1.4),
+            sin(uTime * 0.22 + position.x * 1.1),
+            cos(uTime * 0.28 + position.z * 0.9)
           );
           vec4 mv = modelViewMatrix * vec4(p, 1.0);
           gl_Position = projectionMatrix * mv;
@@ -220,7 +220,7 @@ export class World {
           vec2 uv = gl_PointCoord - 0.5;
           float d = length(uv);
           if (d > 0.5) discard;
-          float matte = smoothstep(0.5, 0.18, d);
+          float matte = smoothstep(0.5, 0.12, d);
           gl_FragColor = vec4(uColor, matte * vAlpha);
         }
       `,
@@ -239,15 +239,15 @@ export class World {
     this.lines = new THREE.LineSegments(
       lineGeo,
       new THREE.LineBasicMaterial({
-        color: 0xb8612e,
+        color: 0xf0eee9,
         transparent: true,
-        opacity: 0.28,
+        opacity: 0.16,
         depthWrite: false
       })
     );
     this.group.add(this.lines);
 
-    const bloom = this.mobile || this.reduced ? 0.1 : 0.16;
+    const bloom = this.mobile || this.reduced ? 0.08 : 0.12;
     this.composer = new EffectComposer(this.renderer);
     this.composer.addPass(new RenderPass(this.scene, this.camera));
     this.bloomPass = new UnrealBloomPass(
@@ -377,7 +377,7 @@ export class World {
     this.camera.position.y += (y - this.camera.position.y) * 0.05;
     this.camera.lookAt(0, 0, 0);
 
-    this.bloomPass.strength = this.mobile || this.reduced ? 0.08 : 0.14;
+    this.bloomPass.strength = this.mobile || this.reduced ? 0.06 : 0.1;
     this.composer.render();
   };
 }

@@ -5,7 +5,8 @@
   --ink: #f4efe8;
   --grey: #cfc6bc;
   --dim: #9a9188;
-  --matte: #c56a2c;
+  --cloud: #f0eee9;
+  --matte: #f0eee9;
   --font: "IBM Plex Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
   --safe-top: env(safe-area-inset-top, 0px);
@@ -96,13 +97,23 @@ button:focus-visible {
 }
 .mark:hover { color: var(--ink); text-decoration: none; }
 
-.mark__node {
-  width: 11px;
-  height: 11px;
-  border: 1.5px solid var(--matte);
-  border-radius: 50%;
-  box-shadow: 0 0 0 4px rgba(197, 106, 44, 0.12);
+.mark__bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 16px;
 }
+
+.mark__bars i {
+  display: block;
+  width: 3.5px;
+  border-radius: 0.6px;
+  background: var(--cloud);
+}
+
+.mark__bars i:nth-child(1) { height: 11px; opacity: 0.42; }
+.mark__bars i:nth-child(2) { height: 13.5px; opacity: 0.72; }
+.mark__bars i:nth-child(3) { height: 16px; opacity: 1; }
 
 .mark__sig {
   writing-mode: vertical-rl;
@@ -147,7 +158,7 @@ button:focus-visible {
 .rail button[aria-current="true"] {
   background: var(--matte);
   border-color: var(--matte);
-  box-shadow: 0 0 0 4px rgba(197, 106, 44, 0.16);
+  box-shadow: 0 0 0 4px rgba(240, 238, 233, 0.14);
   transform: scale(1.15);
 }
 
@@ -394,7 +405,7 @@ button:focus-visible {
 }
 
 .door--copy.is-done {
-  border-color: rgba(197, 106, 44, 0.7);
+  border-color: rgba(240, 238, 233, 0.7);
 }
 
 .door__orb {
@@ -402,7 +413,7 @@ button:focus-visible {
   height: 11px;
   border: 1.5px solid var(--matte);
   border-radius: 50%;
-  box-shadow: 0 0 0 4px rgba(197, 106, 44, 0.1);
+  box-shadow: 0 0 0 4px rgba(240, 238, 233, 0.1);
   transition: background 0.2s ease;
 }
 

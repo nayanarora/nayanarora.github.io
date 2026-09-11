@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="Nayan Arora">
+  <title>Nayan Arora</title>
+  <rect width="100" height="100" fill="#070605"/>
+  <g fill="#f0eee9">
+    <rect x="22" y="18" width="14" height="64" rx="1.2" opacity="0.42"/>
+    <rect x="43" y="18" width="14" height="64" rx="1.2" opacity="0.72"/>
+    <rect x="64" y="18" width="14" height="64" rx="1.2"/>
+  </g>
+</svg>

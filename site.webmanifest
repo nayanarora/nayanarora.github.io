@@ -4,8 +4,8 @@
   "description": "Nayan Arora — Applied AI Engineer, Canberra.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#000000",
-  "theme_color": "#000000",
+  "background_color": "#070605",
+  "theme_color": "#070605",
   "icons": [
     {
       "src": "/android-192x192.png",

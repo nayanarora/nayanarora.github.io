@@ -2,7 +2,10 @@
 <html lang="en-AU">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="google-site-verification" content="sngwtRhSEzvXFoY1ivpCkiXKmrZCm-clFLIDuHGseog">
   <title>Nayan Arora</title>
   <meta name="description" content="Nayan Arora — Applied AI Engineer at Sunstone Advisory, Canberra. Civic rates modelling, climate time series, spatial systems, NUS image recognition.">
@@ -45,19 +48,22 @@
 
   <main class="frame">
     <section class="panel is-on" id="about">
-      <article class="card">
-        <p class="meta">About</p>
-        <h1>Nayan Arora</h1>
-        <p>Applied AI Engineer at Sunstone Advisory in Canberra. Civic rates modelling, climate time series, and spatial systems.</p>
-        <p>Master of Information Technology and Systems, specialising in AI/ML, University of Canberra (GPA 7/7). Bachelor of Science in Computer Science, cum laude, Arizona State University.</p>
-        <p>In 2019 I completed an image-recognition project at the National University of Singapore (SERIUS). Apple Specialist in Scottsdale, 2021–22. Before this role: Sunstone intern, Exemplary Energy, shorter roles at Xaana / Turium and BizFlash.</p>
-        <p>If you searched “Nayan Arora” and landed on a nephrologist in Portland or a founder in Bengaluru, that is someone else. ORCID 0009-0004-6721-7076.</p>
-        <p class="cue">Swipe</p>
+      <article class="card card--about">
+        <img class="portrait" src="images/portrait.jpg" width="1050" height="1400" alt="Nayan Arora in a grey suit">
+        <div class="card__copy">
+          <p class="meta">About</p>
+          <h1>Nayan Arora</h1>
+          <p>Applied AI Engineer at Sunstone Advisory in Canberra. Civic rates modelling, climate time series, and spatial systems.</p>
+          <p>Master of Information Technology and Systems, specialising in AI/ML, University of Canberra (GPA 7/7). Bachelor of Science in Computer Science, cum laude, Arizona State University.</p>
+          <p>In 2019 I completed an image-recognition project at the National University of Singapore (SERIUS). Apple Specialist in Scottsdale, 2021–22. Before this role: Sunstone intern, Exemplary Energy, shorter roles at Xaana / Turium and BizFlash.</p>
+          <p>If you searched “Nayan Arora” and landed on a nephrologist in Portland or a founder in Bengaluru, that is someone else. ORCID 0009-0004-6721-7076.</p>
+          <p class="cue">Swipe</p>
+        </div>
       </article>
     </section>
 
     <section class="panel" id="work">
-      <div>
+      <div class="stack">
         <p class="meta">Work</p>
         <div class="tiles">
           <button class="tile" type="button" data-open="bcc">
@@ -68,8 +74,8 @@
             <img src="images/generated/spatial-ops.jpg" width="1152" height="864" alt="" loading="lazy">
             <span>Spatial / mixed reality<em>Unity · ArcGIS</em></span>
           </button>
-          <button class="tile" type="button" data-open="governed">
-            <span>Governed AI<em>Internal</em></span>
+          <button class="tile tile--sensitive" type="button" data-open="governed">
+            <span>Governed AI<em>Sensitive work</em></span>
           </button>
           <button class="tile" type="button" data-open="exemplary">
             <img src="images/generated/climate-stations.jpg" width="1152" height="864" alt="" loading="lazy">
@@ -92,7 +98,7 @@
     </section>
 
     <section class="panel" id="notes">
-      <div>
+      <div class="stack">
         <p class="meta">Notes</p>
         <div class="tiles">
           <button class="tile" type="button" data-open="serra">
@@ -108,7 +114,7 @@
     </section>
 
     <section class="panel" id="contact">
-      <article class="card">
+      <article class="card card--contact">
         <p class="meta">Contact</p>
         <h2>Contact</h2>
         <p class="contact-line">nayan.arora.work@gmail.com</p>
@@ -141,8 +147,9 @@
       <p>Unity, PolySpatial, and ArcGIS. Track &amp; Secure began as a proof of concept. Production work stays internal.</p>
     </template>
     <template id="detail-governed">
+      <p class="meta">Sensitive work</p>
       <h2>Governed AI</h2>
-      <p>Sunstone work for government and Defence-adjacent systems. That work is not described here.</p>
+      <p>This work is sensitive, which is why nothing is shared here.</p>
     </template>
     <template id="detail-exemplary">
       <img src="images/generated/climate-stations.jpg" width="1152" height="864" alt="Australian weather station in grassland">

@@ -71,9 +71,77 @@ function sheets(scene) {
   const body = $("#sheet-body");
   if (!dialog || !body) return;
 
+  let lockedY = 0;
+  let touchY = 0;
+
+  const lockPage = () => {
+    if (document.documentElement.classList.contains("is-locked")) return;
+    lockedY = window.scrollY;
+    document.documentElement.classList.add("is-locked");
+    document.body.style.top = `-${lockedY}px`;
+  };
+
+  const unlockPage = () => {
+    if (!document.documentElement.classList.contains("is-locked")) return;
+    document.documentElement.classList.remove("is-locked");
+    document.body.style.top = "";
+    window.scrollTo(0, lockedY);
+  };
+
+  const overflows = () => body.scrollHeight > body.clientHeight + 1;
+
+  const blockIfNeeded = (event, deltaY) => {
+    if (!dialog.open) return;
+    if (!overflows()) {
+      event.preventDefault();
+      return;
+    }
+    const atTop = body.scrollTop <= 0 && deltaY < 0;
+    const atBottom =
+      body.scrollTop + body.clientHeight >= body.scrollHeight - 1 && deltaY > 0;
+    if (atTop || atBottom) event.preventDefault();
+  };
+
+  document.addEventListener(
+    "wheel",
+    (event) => {
+      if (!dialog.open) return;
+      if (!dialog.contains(event.target) || !overflows()) {
+        event.preventDefault();
+        return;
+      }
+      blockIfNeeded(event, event.deltaY);
+    },
+    { passive: false }
+  );
+
+  document.addEventListener(
+    "touchstart",
+    (event) => {
+      touchY = event.touches[0]?.clientY ?? 0;
+    },
+    { passive: true }
+  );
+
+  document.addEventListener(
+    "touchmove",
+    (event) => {
+      if (!dialog.open) return;
+      const y = event.touches[0]?.clientY ?? 0;
+      const deltaY = touchY - y;
+      if (!dialog.contains(event.target) || !overflows()) {
+        event.preventDefault();
+        return;
+      }
+      blockIfNeeded(event, deltaY);
+    },
+    { passive: false }
+  );
+
   const close = () => {
     if (dialog.open) dialog.close();
     else dialog.removeAttribute("open");
+    unlockPage();
     if (scene) scene.quiet = false;
     const section = location.hash && !location.hash.startsWith("#d-")
       ? location.hash
@@ -86,8 +154,10 @@ function sheets(scene) {
     const src = document.getElementById(`detail-${id}`);
     if (!src) return;
     body.replaceChildren(src.content.cloneNode(true));
+    lockPage();
     if (typeof dialog.showModal === "function") dialog.showModal();
     else dialog.setAttribute("open", "");
+    body.scrollTop = 0;
     if (scene) scene.quiet = true;
     history.replaceState(null, "", `#d-${id}`);
     $(".sheet .sheet__close")?.focus();

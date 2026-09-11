@@ -141,7 +141,8 @@ export class World {
       transparent: true
     });
 
-    this.core = new THREE.Mesh(new THREE.IcosahedronGeometry(1.18, 48), this.coreMat);
+    const coreDetail = this.mobile || this.reduced ? 3 : 5;
+    this.core = new THREE.Mesh(new THREE.IcosahedronGeometry(1.18, coreDetail), this.coreMat);
     this.group.add(this.core);
 
     const wire = new THREE.Mesh(
@@ -156,7 +157,7 @@ export class World {
     this.wire = wire;
     this.group.add(wire);
 
-    const ribbonGeo = new THREE.TorusKnotGeometry(1.85, 0.012, 420, 12, 2, 3);
+    const ribbonGeo = new THREE.TorusKnotGeometry(1.85, 0.012, this.mobile ? 180 : 320, 8, 2, 3);
     this.ribbon = new THREE.Mesh(
       ribbonGeo,
       new THREE.MeshBasicMaterial({ color: 0xe85d04, transparent: true, opacity: 0.42 })

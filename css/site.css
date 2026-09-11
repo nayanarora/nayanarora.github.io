@@ -19,23 +19,27 @@
 *::after { box-sizing: border-box; }
 
 html {
-  scroll-snap-type: y proximity;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
   background: var(--bg);
   overflow-x: clip;
+  overflow-y: scroll;
+  height: 100%;
   color-scheme: dark;
 }
 
 html, body {
   margin: 0;
-  min-height: 100%;
-  min-height: 100dvh;
-  min-height: 100lvh;
   background: var(--bg);
   color: var(--ink);
   font-family: var(--font);
   font-size: clamp(16px, 0.45vw + 15px, 18px);
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
+}
+
+body {
+  min-height: 100%;
 }
 
 html.is-locked,
@@ -127,13 +131,17 @@ button:focus-visible {
 }
 
 .panel {
-  min-height: 100svh;
-  min-height: 100dvh;
-  min-height: 100lvh;
+  height: 100svh;
+  height: 100dvh;
+  max-height: 100dvh;
   scroll-snap-align: start;
   scroll-snap-stop: always;
   display: flex;
   align-items: stretch;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  -webkit-overflow-scrolling: touch;
   padding: calc(28px + var(--safe-top)) max(20px, var(--safe-right)) calc(28px + var(--safe-bottom)) max(52px, var(--safe-left));
   opacity: 0;
   pointer-events: none;
@@ -259,7 +267,7 @@ button:focus-visible {
 
 .tile img {
   width: 100%;
-  aspect-ratio: 16 / 10;
+  aspect-ratio: 16 / 9;
   object-fit: cover;
 }
 
@@ -407,11 +415,17 @@ button:focus-visible {
 
   .portrait {
     width: 100%;
-    max-height: min(40vh, 340px);
+    max-height: min(30vh, 260px);
   }
 
+  .spread--about { gap: 16px; }
+  .copy p { margin: 0 0 8px; }
+  .lede { font-size: 16px; }
+  .role { margin: 0 0 10px; }
+
   .tiles { gap: 8px; }
-  .tile span { font-size: 13px; padding: 26px 10px 10px; }
+  .tile img { aspect-ratio: 16 / 11; }
+  .tile span { font-size: 12px; padding: 22px 10px 8px; }
 
   .sheet {
     position: fixed;
@@ -451,7 +465,10 @@ button:focus-visible {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-snap-type: none; }
+  html {
+    scroll-snap-type: none;
+    scroll-behavior: auto;
+  }
   .tile,
   .panel {
     opacity: 1;

@@ -181,15 +181,144 @@ function sheets(scene) {
   if (bootHash.startsWith("d-")) open(bootHash.slice(2));
 }
 
-function hashScroll() {
+function modules() {
+  const panels = $$(".panel");
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (panels.length < 2) return;
+
+  const current = () => {
+    const vh = window.innerHeight;
+    let best = 0;
+    let bestR = -1;
+    panels.forEach((p, i) => {
+      const r = p.getBoundingClientRect();
+      const vis = Math.min(r.bottom, vh) - Math.max(r.top, 0);
+      if (vis > bestR) {
+        bestR = vis;
+        best = i;
+      }
+    });
+    return best;
+  };
+
+  let busy = false;
+
+  const go = (i, smooth = true) => {
+    if (document.documentElement.classList.contains("is-locked")) return;
+    const next = Math.max(0, Math.min(panels.length - 1, i));
+    const panel = panels[next];
+    if (!panel) return;
+    busy = true;
+    panel.scrollIntoView({ behavior: reduced || !smooth ? "auto" : "smooth", block: "start" });
+    if (panel.id) history.replaceState(null, "", `#${panel.id}`);
+    window.setTimeout(() => {
+      busy = false;
+    }, 720);
+  };
+
+  const atEdge = (dir) => {
+    const panel = panels[current()];
+    if (!panel) return true;
+    if (panel.scrollHeight <= panel.clientHeight + 2) return true;
+    if (dir > 0) return panel.scrollTop + panel.clientHeight >= panel.scrollHeight - 6;
+    return panel.scrollTop <= 6;
+  };
+
+  if (!reduced) {
+    let wheelAcc = 0;
+    let wheelAt = 0;
+    window.addEventListener(
+      "wheel",
+      (e) => {
+        if (document.documentElement.classList.contains("is-locked")) return;
+        if (e.ctrlKey) return;
+        const dir = e.deltaY > 0 ? 1 : -1;
+        if (!atEdge(dir)) return;
+        e.preventDefault();
+        const now = Date.now();
+        if (now - wheelAt > 420) wheelAcc = 0;
+        wheelAt = now;
+        wheelAcc += e.deltaY;
+        if (busy) return;
+        if (wheelAcc > 36) {
+          go(current() + 1);
+          wheelAcc = 0;
+        } else if (wheelAcc < -36) {
+          go(current() - 1);
+          wheelAcc = 0;
+        }
+      },
+      { passive: false }
+    );
+
+    let startY = 0;
+    window.addEventListener(
+      "touchstart",
+      (e) => {
+        startY = e.touches[0]?.clientY ?? 0;
+      },
+      { passive: true }
+    );
+    window.addEventListener(
+      "touchmove",
+      (e) => {
+        if (document.documentElement.classList.contains("is-locked")) return;
+        const y = e.touches[0]?.clientY ?? 0;
+        const dy = startY - y;
+        if (Math.abs(dy) < 10) return;
+        const dir = dy > 0 ? 1 : -1;
+        if (!atEdge(dir)) return;
+        e.preventDefault();
+      },
+      { passive: false }
+    );
+    window.addEventListener(
+      "touchend",
+      (e) => {
+        if (document.documentElement.classList.contains("is-locked")) return;
+        if (busy) return;
+        const y = e.changedTouches[0]?.clientY ?? startY;
+        const dy = startY - y;
+        if (Math.abs(dy) < 52) return;
+        const dir = dy > 0 ? 1 : -1;
+        if (!atEdge(dir)) return;
+        go(current() + dir);
+      },
+      { passive: true }
+    );
+  }
+
+  window.addEventListener("keydown", (e) => {
+    if (document.documentElement.classList.contains("is-locked")) return;
+    const keys = ["PageDown", "PageUp", "ArrowDown", "ArrowUp", " "];
+    if (!keys.includes(e.key)) return;
+    if (e.key === " " && /^(INPUT|TEXTAREA|BUTTON|A)$/.test(e.target.tagName)) return;
+    const dir = e.key === "PageUp" || e.key === "ArrowUp" ? -1 : 1;
+    if (!atEdge(dir)) return;
+    e.preventDefault();
+    go(current() + dir);
+  });
+
+  return { go, current, panels };
+}
+
+function hashScroll(pager) {
   const raw = location.hash.replace("#", "");
   if (!raw || raw.startsWith("d-")) return;
   const el = document.getElementById(raw);
-  el?.scrollIntoView({ behavior: "smooth" });
+  if (!el) return;
+  if (pager) {
+    const i = pager.panels.indexOf(el);
+    if (i >= 0) pager.go(i, false);
+    else el.scrollIntoView({ behavior: "auto", block: "start" });
+    return;
+  }
+  el.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 const scene = world();
 appear();
 sheets(scene);
-window.addEventListener("load", hashScroll);
-window.addEventListener("hashchange", hashScroll);
+const pager = modules();
+window.addEventListener("load", () => hashScroll(pager));
+window.addEventListener("hashchange", () => hashScroll(pager));

@@ -19,7 +19,7 @@ Nayan Arora is an Applied AI Engineer based in Canberra. He works on civic rates
 
 ## Active practice (Sunstone Advisory)
 
-- Brisbane City Council Rates Modelling Solution (CW24476 / 534192), awarded January 2026 to Sunstone Advisory ($1,782,212; 3–5 year term), replacing InfoRM. Civic-scale rating, scenario modelling, governed calculation.
+- Brisbane City Council Rates Modelling Solution, awarded to Sunstone Advisory, replacing InfoRM. Civic-scale rating, scenario modelling, governed calculation.
 - Rates Modelling as a Service (RMaaS): scenario engines, policy-as-logic, Australian-cloud delivery for local government.
 - Spatial and mixed-reality operations: Unity, ARFoundation, Apple PolySpatial, ArcGIS, real-time visualisation.
 - Governed AI for Australian Government and Defence-adjacent systems. Detail that is classified or client-confidential is not published here.

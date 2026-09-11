@@ -83,6 +83,14 @@ button { font: inherit; color: inherit; }
   display: flex;
   align-items: center;
   padding: 56px 16px 48px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+.panel.is-on {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .card {
@@ -282,9 +290,11 @@ button { font: inherit; color: inherit; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-snap-type: none; }
-  .tile {
+  .tile,
+  .panel {
     opacity: 1;
     transform: none;
     transition: none;
+    pointer-events: auto;
   }
 }

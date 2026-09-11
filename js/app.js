@@ -24,11 +24,16 @@ function world() {
 
 function appear() {
   const tiles = $$(".tile");
-  if (!tiles.length || !("IntersectionObserver" in window)) {
+  const panels = $$(".panel");
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (!("IntersectionObserver" in window) || reduced) {
     tiles.forEach((el) => el.classList.add("is-in"));
+    panels.forEach((el) => el.classList.add("is-on"));
     return;
   }
-  const io = new IntersectionObserver(
+
+  const tileIo = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         entry.target.classList.toggle("is-in", entry.isIntersecting);
@@ -36,7 +41,29 @@ function appear() {
     },
     { threshold: 0.28, rootMargin: "0px 0px -8% 0px" }
   );
-  tiles.forEach((el) => io.observe(el));
+  tiles.forEach((el) => tileIo.observe(el));
+
+  const pickPanel = () => {
+    const vh = window.innerHeight;
+    let best = null;
+    let bestR = 0;
+    panels.forEach((p) => {
+      const r = p.getBoundingClientRect();
+      const visible = Math.min(r.bottom, vh) - Math.max(r.top, 0);
+      const ratio = Math.max(0, visible) / vh;
+      if (ratio > bestR) {
+        bestR = ratio;
+        best = p;
+      }
+    });
+    panels.forEach((p) => p.classList.toggle("is-on", p === best));
+  };
+
+  const panelIo = new IntersectionObserver(pickPanel, {
+    threshold: [0, 0.25, 0.5, 0.75, 1]
+  });
+  panels.forEach((el) => panelIo.observe(el));
+  pickPanel();
 }
 
 function sheets(scene) {

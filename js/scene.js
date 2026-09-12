@@ -106,10 +106,10 @@ export class World {
 
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, 0.05, 40);
-    this.camera.position.set(0.16, 0.03, 4.05);
+    this.camera.position.set(0.42, 0.03, 4.05);
 
     this.group = new THREE.Group();
-    this.group.position.set(0.5, 0.02, 0);
+    this.group.position.set(0.82, 0.02, 0);
     this.group.scale.setScalar(1.48);
     this.group.rotation.y = -0.28;
     this.scene.add(this.group);
@@ -121,7 +121,7 @@ export class World {
       depthWrite: false
     });
     this.neurons = new THREE.InstancedMesh(
-      new THREE.SphereGeometry(0.048, 12, 12),
+      new THREE.SphereGeometry(0.04, 12, 12),
       soma,
       this.neuronCount
     );
@@ -295,7 +295,7 @@ export class World {
     const rot = this.reduced ? 0 : Math.sin(t * 0.12) * 0.08;
     this.group.rotation.y = -0.22 + rot + this.pointer.x * 0.06;
     this.group.rotation.x = this.pointer.y * 0.035 + Math.sin(t * 0.09) * 0.02;
-    this.camera.lookAt(0.3, 0, 0);
+    this.camera.lookAt(0.72, 0, 0);
 
     this.bloomPass.strength = this.mobile || this.reduced ? 0.06 : 0.09;
     this.composer.render();

@@ -15,8 +15,8 @@ function hash(i) {
 
 function mlp() {
   const widths = [8, 14, 18, 14, 8];
-  const layerGap = 0.92;
-  const nodeGap = 0.2;
+  const layerGap = 1.08;
+  const nodeGap = 0.185;
   const hubs = [];
   const layers = [];
 
@@ -38,7 +38,7 @@ function mlp() {
   for (let L = 0; L < layers.length - 1; L++) {
     const a = layers[L];
     const b = layers[L + 1];
-    const density = L === 0 || L === layers.length - 2 ? 0.72 : 0.55;
+    const density = L === 0 || L === layers.length - 2 ? 0.62 : 0.4;
     for (let i = 0; i < a.length; i++) {
       for (let j = 0; j < b.length; j++) {
         if (hash(L * 97 + i * 13 + j * 7) < density) {
@@ -106,27 +106,30 @@ export class World {
 
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, 0.05, 40);
-    this.camera.position.set(0.18, 0.04, 3.55);
+    this.camera.position.set(0.16, 0.03, 4.05);
 
     this.group = new THREE.Group();
-    this.group.position.set(0.46, 0.02, 0);
-    this.group.scale.setScalar(1.72);
-    this.group.rotation.y = -0.22;
+    this.group.position.set(0.5, 0.02, 0);
+    this.group.scale.setScalar(1.48);
+    this.group.rotation.y = -0.28;
     this.scene.add(this.group);
 
     this.neuronCount = art.hubs.length;
     const soma = new THREE.MeshBasicMaterial({
-      color: 0xffffff,
-      vertexColors: true,
       transparent: true,
-      opacity: 0.9
+      opacity: 0.92,
+      depthWrite: false
     });
     this.neurons = new THREE.InstancedMesh(
-      new THREE.SphereGeometry(0.07, 12, 12),
+      new THREE.SphereGeometry(0.048, 12, 12),
       soma,
       this.neuronCount
     );
     this.neurons.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+    this.neurons.instanceColor = new THREE.InstancedBufferAttribute(
+      new Float32Array(this.neuronCount * 3),
+      3
+    );
     this.group.add(this.neurons);
     this._dummy = new THREE.Object3D();
     this._placeNeurons();

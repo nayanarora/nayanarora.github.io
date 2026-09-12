@@ -1,4 +1,4 @@
-import { World } from "./scene.js?v=neural4";
+import { World } from "./scene.js?v=neural5";
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];

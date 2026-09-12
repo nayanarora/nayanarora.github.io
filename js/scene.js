@@ -45,9 +45,10 @@ function brainTracts(count) {
     }
   }
   while (n < count) {
-    pts[n * 3] = (hash(n) - 0.5) * 7;
-    pts[n * 3 + 1] = (hash(n + 4) - 0.5) * 5;
-    pts[n * 3 + 2] = (hash(n + 8) - 0.5) * 6;
+    const p = ellipsoid(hash(n), hash(n + 4), 2.35, 1.55, 1.9);
+    pts[n * 3] = p[0];
+    pts[n * 3 + 1] = p[1];
+    pts[n * 3 + 2] = p[2];
     n += 1;
   }
   return pts;
@@ -80,17 +81,18 @@ export class World {
     this.renderer.setClearColor(0x000000, 0);
 
     this.scene = new THREE.Scene();
-    this.camera = new THREE.PerspectiveCamera(36, window.innerWidth / window.innerHeight, 0.1, 80);
-    this.camera.position.set(0.2, 0.06, 5.85);
+    this.camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, 0.05, 40);
+    this.camera.position.set(0.15, 0.04, 3.35);
 
     this.group = new THREE.Group();
-    this.group.position.set(0.7, 0.04, 0);
+    this.group.position.set(0.42, 0.02, 0);
+    this.group.scale.setScalar(1.62);
     this.scene.add(this.group);
 
     const pts = brainTracts(count);
     this.current = pts;
 
-    this.neuronCount = this.mobile ? 16 : 24;
+    this.neuronCount = this.mobile ? 20 : 32;
     const soma = new THREE.MeshBasicMaterial({
       color: 0xffffff,
       vertexColors: true,
@@ -98,7 +100,7 @@ export class World {
       opacity: 0.62
     });
     this.neurons = new THREE.InstancedMesh(
-      new THREE.SphereGeometry(0.038, 8, 8),
+      new THREE.SphereGeometry(0.055, 10, 10),
       soma,
       this.neuronCount
     );
@@ -141,8 +143,8 @@ export class World {
           );
           vec4 mv = modelViewMatrix * vec4(p, 1.0);
           gl_Position = projectionMatrix * mv;
-          gl_PointSize = aSize * uPixelRatio * (32.0 / -mv.z);
-          vAlpha = clamp(1.15 / length(mv.xyz), 0.1, 0.42);
+          gl_PointSize = aSize * uPixelRatio * (54.0 / -mv.z);
+          vAlpha = clamp(1.35 / length(mv.xyz), 0.16, 0.55);
           vAccent = aAccent;
         }
       `,
@@ -167,7 +169,7 @@ export class World {
     this.points = new THREE.Points(geo, this.pointsMat);
     this.group.add(this.points);
 
-    const lineCount = this.mobile ? 220 : 420;
+    const lineCount = this.mobile ? 280 : 520;
     this.lineCount = lineCount;
     this.linePos = new Float32Array(lineCount * 6);
     const lineGeo = new THREE.BufferGeometry();
@@ -177,7 +179,7 @@ export class World {
       new THREE.LineBasicMaterial({
         color: LINE,
         transparent: true,
-        opacity: 0.18,
+        opacity: 0.28,
         depthWrite: false
       })
     );
@@ -271,7 +273,7 @@ export class World {
     const rot = this.reduced ? 0 : t * 0.028;
     this.group.rotation.y = rot + this.pointer.x * 0.1;
     this.group.rotation.x = this.pointer.y * 0.05 + Math.sin(t * 0.09) * 0.03;
-    this.camera.lookAt(0.4, 0, 0);
+    this.camera.lookAt(0.28, 0, 0);
 
     this.bloomPass.strength = 0.04;
     this.composer.render();

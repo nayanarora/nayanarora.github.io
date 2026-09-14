@@ -307,7 +307,7 @@ def build_pdf() -> Path:
     y = draw_section_label(c, left, y, "Before You Go")
     y = draw_paragraph(
         c,
-        "Included & sponsored: Private transportation, tour guide and Taj Mahal entry tickets are already arranged and covered.",
+        "Included & sponsored: Private transportation, a tour guide and Taj Mahal entry tickets will all be arranged for you — guests need not worry about organising any of this.",
         left,
         y,
         content_w,
@@ -343,7 +343,7 @@ def build_pdf() -> Path:
     y = draw_section_label(c, left, y + 1 * mm, "A Note on Timing")
     draw_paragraph(
         c,
-        "The 1:15 pm departure from Agra is a helpful guide so there is a comfortable buffer for the return journey. Actual travel times may vary with road and traffic conditions, and the day can flex around what the group enjoys most.",
+        "The day flow above is only suggestive and is totally flexible as per guest preference. The 1:15 pm departure from Agra is a helpful guide so there is a comfortable buffer for the return journey. Actual travel times may vary with road and traffic conditions.",
         left,
         y,
         content_w,

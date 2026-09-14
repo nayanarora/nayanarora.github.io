@@ -343,7 +343,7 @@ def build_pdf() -> Path:
     y = draw_section_label(c, left, y + 1 * mm, "A Note on Timing")
     draw_paragraph(
         c,
-        "The day flow above is only suggestive and is totally flexible as per guest preference. The 1:15 pm departure from Agra is a helpful guide so there is a comfortable buffer for the return journey. Actual travel times may vary with road and traffic conditions.",
+        "The day flow above is only suggestive and is totally flexible as per guest preference. The 1:15 pm departure from Agra is a helpful guide so there is a comfortable return buffer — aiming for guests to be back by 4:00 pm to enjoy high tea at the JW Marriott with the rest of the wedding group, ahead of the meet-and-greet welcome dinner from 6:30 pm. Actual travel times may vary with road and traffic conditions.",
         left,
         y,
         content_w,

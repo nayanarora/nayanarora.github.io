@@ -13,7 +13,8 @@ from reportlab.pdfgen import canvas
 ROOT = Path(__file__).resolve().parents[1]
 ASSETS = ROOT / "guest-materials" / "assets"
 FONTS = ASSETS / "fonts"
-OUT = ROOT / "guest-materials" / "Agra_Day_Trip_19_Sep_2026_Surbhi_Kush.pdf"
+OUT = ROOT / "guest-materials" / "Agra_Day_Trip.pdf"
+OUT_ALIAS = ROOT / "guest-materials" / "Agra_Day_Trip_19_Sep_2026_Surbhi_Kush.pdf"
 
 GOLD = HexColor("#785820")
 GOLD_SOFT = HexColor("#A8894A")
@@ -41,12 +42,12 @@ def draw_page_backdrop(c: canvas.Canvas, width: float, height: float) -> None:
     c.rect(0, 0, width, height, fill=1, stroke=0)
 
     # Soft corner washes
-    c.setFillColor(Color(0.96, 0.93, 0.88, alpha=0.9))
+    c.setFillColor(PAPER_ALT)
     c.circle(-20 * mm, height + 10 * mm, 70 * mm, fill=1, stroke=0)
     c.circle(width + 25 * mm, -15 * mm, 80 * mm, fill=1, stroke=0)
 
     # Taj Mahal wireframe watermark
-    wm = str(ASSETS / "taj_watermark.png")
+    wm = str(ASSETS / "taj_watermark_flat.jpg")
     wm_size = 158 * mm
     c.drawImage(
         wm,
@@ -54,7 +55,6 @@ def draw_page_backdrop(c: canvas.Canvas, width: float, height: float) -> None:
         (height - wm_size) / 2 - 4 * mm,
         width=wm_size,
         height=wm_size,
-        mask="auto",
         preserveAspectRatio=True,
         anchor="c",
     )
@@ -71,7 +71,7 @@ def draw_page_backdrop(c: canvas.Canvas, width: float, height: float) -> None:
 
 
 def draw_header(c: canvas.Canvas, width: float, height: float, subtitle: str) -> float:
-    logo = str(ASSETS / "sk_logo.png")
+    logo = str(ASSETS / "sk_logo_flat.jpg")
     logo_w = 28 * mm
     logo_h = 29 * mm
     c.drawImage(
@@ -80,7 +80,6 @@ def draw_header(c: canvas.Canvas, width: float, height: float, subtitle: str) ->
         height - 42 * mm,
         width=logo_w,
         height=logo_h,
-        mask="auto",
         preserveAspectRatio=True,
     )
 
@@ -390,7 +389,13 @@ def build_pdf() -> Path:
         color=INK_MUTED,
     )
     draw_footer(c, width, 2, total_pages)
+    c.setTitle("Agra Day Trip — Surbhi & Kush")
+    c.setAuthor("Surbhi & Kush")
+    c.setSubject("Guest itinerary and lunch options — Saturday 19 September 2026")
+    c.setCreator("Surbhi & Kush Wedding")
     c.save()
+    # Keep the longer filename as a copy for continuity
+    OUT_ALIAS.write_bytes(OUT.read_bytes())
     return OUT
 
 

@@ -266,8 +266,8 @@ def draw_lunch_options(c: canvas.Canvas, x: float, y: float, content_w: float) -
         c.setFont("Cormorant-SemiBold", 11)
         c.drawString(x + 6 * mm, y - 0.4, name)
         y -= 4.2 * mm
-        c.setFillColor(GOLD_SOFT)
-        c.setFont("SourceSans-Light", 8.2)
+        c.setFillColor(INK)
+        c.setFont("SourceSans-Semi", 8.8)
         c.drawString(x + 6 * mm, y, style)
         y -= 3.8 * mm
         y = draw_paragraph(
@@ -285,13 +285,10 @@ def draw_lunch_options(c: canvas.Canvas, x: float, y: float, content_w: float) -
     return y
 
 
-def draw_footer(c: canvas.Canvas, width: float, page_no: int, total: int) -> None:
+def draw_footer(c: canvas.Canvas, width: float) -> None:
     c.setFillColor(GOLD)
     c.setFont("Cinzel", 7)
-    c.drawCentredString(width / 2, 17 * mm, "SURBHI & KUSH  ·  WEDDING WEEKEND")
-    c.setFillColor(INK_MUTED)
-    c.setFont("SourceSans-Light", 7.5)
-    c.drawCentredString(width / 2, 13 * mm, f"{page_no} / {total}")
+    c.drawCentredString(width / 2, 16 * mm, "SURBHI & KUSH  ·  WEDDING WEEKEND")
 
 
 def build_pdf() -> Path:
@@ -301,7 +298,6 @@ def build_pdf() -> Path:
     c = canvas.Canvas(str(OUT), pagesize=A4)
     left = 22 * mm
     content_w = width - 2 * left
-    total_pages = 2
 
     # ---- Page 1: Day trip ----
     draw_page_backdrop(c, width, height)
@@ -356,7 +352,7 @@ def build_pdf() -> Path:
         leading=12,
         color=INK_MUTED,
     )
-    draw_footer(c, width, 1, total_pages)
+    draw_footer(c, width)
     c.showPage()
 
     # ---- Page 2: Lunch ----
@@ -388,7 +384,7 @@ def build_pdf() -> Path:
         leading=13,
         color=INK_MUTED,
     )
-    draw_footer(c, width, 2, total_pages)
+    draw_footer(c, width)
     c.setTitle("Agra Day Trip — Surbhi & Kush")
     c.setAuthor("Surbhi & Kush")
     c.setSubject("Guest itinerary and lunch options — Saturday 19 September 2026")

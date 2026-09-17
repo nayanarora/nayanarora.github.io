@@ -4,8 +4,8 @@ import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
 import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 
-const LINE = new THREE.Color("#1a335c");
-const NODE = new THREE.Color("#243e6b");
+const LINE = new THREE.Color("#2a4a78");
+const NODE = new THREE.Color("#3d5c8a");
 const ORANGE = new THREE.Color("#c45a14");
 
 function hash(i) {
@@ -121,7 +121,7 @@ export class World {
       depthWrite: false
     });
     this.neurons = new THREE.InstancedMesh(
-      new THREE.SphereGeometry(0.026, 12, 12),
+      new THREE.SphereGeometry(0.018, 10, 10),
       soma,
       this.neuronCount
     );
@@ -141,7 +141,7 @@ export class World {
     for (let i = 0; i < this.count; i++) {
       const isHub = i < this.hubs.length;
       sizes[i] = isHub ? 0.9 : hash(i) * 0.4 + 0.2;
-      accents[i] = hash(i + 21) < 0.7 ? 1 : 0;
+      accents[i] = hash(i + 21) < 0.45 ? 1 : 0;
     }
     geo.setAttribute("aSize", new THREE.BufferAttribute(sizes, 1));
     geo.setAttribute("aAccent", new THREE.BufferAttribute(accents, 1));
@@ -205,7 +205,7 @@ export class World {
       new THREE.LineBasicMaterial({
         color: LINE,
         transparent: true,
-        opacity: this.mobile ? 0.22 : 0.26,
+        opacity: this.mobile ? 0.32 : 0.38,
         depthWrite: false
       })
     );
@@ -247,7 +247,7 @@ export class World {
       this._dummy.scale.setScalar(0.95 + hash(i) * 0.28);
       this._dummy.updateMatrix();
       this.neurons.setMatrixAt(i, this._dummy.matrix);
-      this.neurons.setColorAt(i, hash(i + 9) < 0.7 ? ORANGE : NODE);
+      this.neurons.setColorAt(i, hash(i + 9) < 0.45 ? ORANGE : NODE);
     }
     this.neurons.instanceMatrix.needsUpdate = true;
     if (this.neurons.instanceColor) this.neurons.instanceColor.needsUpdate = true;

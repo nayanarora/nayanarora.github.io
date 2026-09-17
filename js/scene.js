@@ -4,9 +4,9 @@ import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
 import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 
-const LINE = new THREE.Color("#3a7fa3");
-const NODE = new THREE.Color("#4aa3c7");
-const ORANGE = new THREE.Color("#c56a2c");
+const LINE = new THREE.Color("#1a335c");
+const NODE = new THREE.Color("#243e6b");
+const ORANGE = new THREE.Color("#c45a14");
 
 function hash(i) {
   const x = Math.sin(i * 127.1 + 311.7) * 43758.5453;
@@ -105,8 +105,8 @@ export class World {
     this.renderer.setClearColor(0x000000, 0);
 
     this.scene = new THREE.Scene();
-    this.camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, 0.05, 40);
-    this.camera.position.set(0.42, 0.03, 4.05);
+    this.camera = new THREE.PerspectiveCamera(32, window.innerWidth / window.innerHeight, 0.05, 40);
+    this.camera.position.set(0.42, 0.03, 4.86);
 
     this.group = new THREE.Group();
     this.group.position.set(0.82, 0.02, 0);
@@ -117,11 +117,11 @@ export class World {
     this.neuronCount = art.hubs.length;
     const soma = new THREE.MeshBasicMaterial({
       transparent: true,
-      opacity: 0.92,
+      opacity: 0.86,
       depthWrite: false
     });
     this.neurons = new THREE.InstancedMesh(
-      new THREE.SphereGeometry(0.04, 12, 12),
+      new THREE.SphereGeometry(0.026, 12, 12),
       soma,
       this.neuronCount
     );
@@ -140,7 +140,7 @@ export class World {
     const accents = new Float32Array(this.count);
     for (let i = 0; i < this.count; i++) {
       const isHub = i < this.hubs.length;
-      sizes[i] = isHub ? 1.35 : hash(i) * 0.55 + 0.28;
+      sizes[i] = isHub ? 0.9 : hash(i) * 0.4 + 0.2;
       accents[i] = hash(i + 21) < 0.7 ? 1 : 0;
     }
     geo.setAttribute("aSize", new THREE.BufferAttribute(sizes, 1));
@@ -162,7 +162,7 @@ export class World {
         varying float vAccent;
         void main() {
           vec3 p = position;
-          float pulse = 0.78 + 0.22 * sin(uTime * 0.85 - position.x * 2.4);
+          float pulse = 0.88 + 0.12 * sin(uTime * 0.55 - position.x * 2.4);
           p += 0.008 * vec3(
             sin(uTime * 0.18 + position.y * 1.2),
             sin(uTime * 0.14 + position.x * 0.9),
@@ -170,8 +170,8 @@ export class World {
           );
           vec4 mv = modelViewMatrix * vec4(p, 1.0);
           gl_Position = projectionMatrix * mv;
-          gl_PointSize = aSize * uPixelRatio * (70.0 / -mv.z);
-          vAlpha = clamp(1.55 / length(mv.xyz), 0.14, 0.66) * pulse;
+          gl_PointSize = aSize * uPixelRatio * (52.0 / -mv.z);
+          vAlpha = clamp(1.35 / length(mv.xyz), 0.12, 0.52) * pulse;
           vAccent = aAccent;
         }
       `,
@@ -205,7 +205,7 @@ export class World {
       new THREE.LineBasicMaterial({
         color: LINE,
         transparent: true,
-        opacity: this.mobile ? 0.26 : 0.3,
+        opacity: this.mobile ? 0.22 : 0.26,
         depthWrite: false
       })
     );
@@ -216,9 +216,9 @@ export class World {
     this.composer.addPass(new RenderPass(this.scene, this.camera));
     this.bloomPass = new UnrealBloomPass(
       new THREE.Vector2(window.innerWidth, window.innerHeight),
-      0.08,
-      0.42,
-      0.7
+      0.04,
+      0.35,
+      0.78
     );
     this.composer.addPass(this.bloomPass);
     this.composer.addPass(new OutputPass());
@@ -297,7 +297,7 @@ export class World {
     this.group.rotation.x = this.pointer.y * 0.035 + Math.sin(t * 0.09) * 0.02;
     this.camera.lookAt(0.72, 0, 0);
 
-    this.bloomPass.strength = this.mobile || this.reduced ? 0.06 : 0.09;
+    this.bloomPass.strength = this.mobile || this.reduced ? 0.03 : 0.045;
     this.composer.render();
   };
 }

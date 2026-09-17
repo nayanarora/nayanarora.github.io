@@ -1,13 +1,16 @@
-/* Field first. Type sits on the animation. No smoked-glass cards. */
+/* Void, type, field. No glass, no cream, no toy orbs. */
 
 :root {
-  --bg: #070605;
-  --ink: #f4efe8;
-  --grey: #cfc6bc;
-  --dim: #9a9188;
-  --cloud: #f0eee9;
-  --matte: #9eb8c4;
-  --font: "IBM Plex Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --bg: #000000;
+  --ink: #f5f5f5;
+  --grey: #b5b8be;
+  --dim: #6d7380;
+  --cloud: #f5f5f5;
+  --matte: #8a9bb0;
+  --navy: #1a335c;
+  --heat: #c45a14;
+  --line: rgba(255, 255, 255, 0.12);
+  --font: "Inter Tight", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
   --safe-top: env(safe-area-inset-top, 0px);
   --safe-right: env(safe-area-inset-right, 0px);
@@ -31,8 +34,9 @@ html, body {
   background: var(--bg);
   color: var(--ink);
   font-family: var(--font);
-  font-size: clamp(16px, 0.45vw + 15px, 18px);
-  line-height: 1.55;
+  font-size: clamp(15px, 0.4vw + 14px, 17px);
+  line-height: 1.5;
+  letter-spacing: 0.01em;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -58,7 +62,7 @@ a:hover { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
 img { max-width: 100%; height: auto; display: block; }
 button { font: inherit; color: inherit; outline: none; }
 button:focus-visible {
-  outline: 1px solid rgba(244, 239, 232, 0.45);
+  outline: 1px solid var(--heat);
   outline-offset: 3px;
 }
 
@@ -78,7 +82,7 @@ button:focus-visible {
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  opacity: 0.7;
+  opacity: 0.55;
 }
 
 .mark {
@@ -107,8 +111,8 @@ button:focus-visible {
 
 .mark__bars i {
   display: block;
-  width: 3.5px;
-  border-radius: 0.6px;
+  width: 2px;
+  border-radius: 0;
   background: var(--cloud);
 }
 
@@ -119,52 +123,56 @@ button:focus-visible {
 .mark__sig {
   writing-mode: vertical-rl;
   transform: rotate(180deg);
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.42em;
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.48em;
   text-transform: uppercase;
 }
 
 .mark__rule {
   width: 1px;
-  height: 28px;
-  background: var(--matte);
-  opacity: 0.7;
+  height: 36px;
+  background: var(--ink);
+  opacity: 0.28;
 }
 
 .rail {
   position: fixed;
   z-index: 8;
   top: 50%;
-  right: max(14px, var(--safe-right));
+  right: max(16px, var(--safe-right));
   transform: translateY(-50%);
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 12px;
+  align-items: flex-end;
+  gap: 2px;
 }
 
 .rail button {
   appearance: none;
-  width: 11px;
-  height: 11px;
-  padding: 0;
-  border: 1.5px solid rgba(244, 239, 232, 0.38);
-  border-radius: 50%;
+  width: auto;
+  min-height: 28px;
+  padding: 4px 0 4px 12px;
+  border: 0;
+  border-right: 1px solid transparent;
+  border-radius: 0;
   background: transparent;
+  color: var(--dim);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
   cursor: pointer;
-  transition: background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+  transition: color 0.2s ease, border-color 0.2s ease;
 }
 
 .rail button[aria-current="true"] {
-  background: var(--matte);
-  border-color: var(--matte);
-  box-shadow: 0 0 0 4px rgba(240, 238, 233, 0.14);
-  transform: scale(1.15);
+  color: var(--ink);
+  border-right-color: var(--heat);
 }
 
 .rail button:hover {
-  border-color: var(--ink);
+  color: var(--ink);
 }
 
 .viewport,
@@ -234,20 +242,21 @@ button:focus-visible {
   aspect-ratio: 3 / 4;
   object-fit: cover;
   object-position: 50% 14%;
-  border-radius: 2px;
-  background: #1a1612;
-  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.28);
+  border-radius: 0;
+  border: 1px solid var(--line);
+  background: #0a0a0a;
 }
 
 .copy h1,
 .copy h2,
 .spread h1,
 .spread h2 {
-  margin: 0 0 8px;
-  font-size: clamp(32px, 5vw, 56px);
+  margin: 0 0 10px;
+  font-size: clamp(34px, 5.2vw, 64px);
   font-weight: 500;
-  letter-spacing: -0.04em;
-  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.85), 0 0 32px rgba(0, 0, 0, 0.55);
+  letter-spacing: -0.045em;
+  line-height: 0.95;
+  text-shadow: none;
 }
 
 .copy p,
@@ -255,15 +264,17 @@ button:focus-visible {
   margin: 0 0 12px;
   color: var(--grey);
   max-width: 58ch;
-  text-shadow: 0 1px 14px rgba(0, 0, 0, 0.8), 0 0 24px rgba(0, 0, 0, 0.45);
+  text-shadow: none;
 }
 
 .role {
-  margin: 0 0 4px;
-  font-size: clamp(15px, 1.6vw, 18px);
-  font-weight: 500;
-  color: var(--matte);
-  letter-spacing: 0.04em;
+  margin: 0 0 6px;
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--ink);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
 }
 
 .where {
@@ -277,8 +288,8 @@ button:focus-visible {
 
 .lede {
   color: var(--ink);
-  font-size: clamp(18px, 1.8vw, 22px);
-  line-height: 1.4;
+  font-size: clamp(17px, 1.6vw, 20px);
+  line-height: 1.45;
 }
 
 .meta {
@@ -316,7 +327,7 @@ button:focus-visible {
   margin: 0;
   padding: 0;
   border: 0;
-  border-radius: 3px;
+  border-radius: 0;
   background: transparent;
   color: inherit;
   text-align: left;
@@ -332,12 +343,13 @@ button:focus-visible {
   transform: none;
 }
 
-.tile:hover { filter: brightness(1.08); }
+.tile:hover { filter: brightness(1.06); }
 
 .tile img {
   width: 100%;
   aspect-ratio: 16 / 9;
   object-fit: cover;
+  border: 1px solid var(--line);
 }
 
 .tile span {
@@ -345,11 +357,14 @@ button:focus-visible {
   left: 0;
   right: 0;
   bottom: 0;
-  padding: 32px 12px 11px;
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 1.3;
-  background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.55));
+  padding: 28px 12px 10px;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  line-height: 1.35;
+  background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.72));
 }
 
 .tile em {
@@ -357,8 +372,9 @@ button:focus-visible {
   margin-top: 3px;
   font-style: normal;
   font-weight: 400;
-  font-size: 12px;
-  color: #ddd6ce;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: var(--dim);
 }
 
 .spread--contact {
@@ -378,10 +394,14 @@ button:focus-visible {
   min-height: 44px;
   padding: 0;
   border: 0;
-  border-bottom: 1px solid rgba(244, 239, 232, 0.35);
+  border-bottom: 1px solid var(--heat);
   border-radius: 0;
   color: var(--ink);
   background: none;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
 }
 
 .mail:hover {
@@ -402,6 +422,10 @@ button:focus-visible {
   align-items: center;
   min-height: 44px;
   color: var(--grey);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
 }
 
 .sheet {
@@ -410,11 +434,11 @@ button:focus-visible {
   max-height: min(92dvh, 860px);
   margin: auto;
   padding: 0;
-  border: 0;
-  border-radius: 4px;
-  background: #11100e;
+  border: 1px solid var(--line);
+  border-radius: 0;
+  background: #05070b;
   color: var(--ink);
-  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.45);
+  box-shadow: none;
   overscroll-behavior: contain;
   transition: transform 0.28s ease;
 }
@@ -422,7 +446,7 @@ button:focus-visible {
 .sheet.is-dragging { transition: none; }
 
 .sheet::backdrop {
-  background: rgba(8, 6, 5, 0.35);
+  background: rgba(0, 0, 0, 0.55);
   overscroll-behavior: none;
 }
 
@@ -447,8 +471,8 @@ button:focus-visible {
   display: block;
   width: 42px;
   height: 4px;
-  border-radius: 99px;
-  background: rgba(244, 239, 232, 0.38);
+  border-radius: 0;
+  background: rgba(245, 245, 245, 0.38);
 }
 
 .sheet__close {
@@ -487,6 +511,7 @@ button:focus-visible {
   margin: 0 0 10px;
   font-size: clamp(22px, 3vw, 30px);
   font-weight: 500;
+  letter-spacing: -0.03em;
 }
 
 .sheet__body p {
@@ -502,7 +527,7 @@ button:focus-visible {
   width: 100%;
   aspect-ratio: 16 / 9;
   object-fit: cover;
-  border-radius: 2px;
+  border-radius: 0;
   margin: 0 0 14px;
 }
 
@@ -529,7 +554,7 @@ button:focus-visible {
 
   .tiles { gap: 8px; }
   .tile img { aspect-ratio: 16 / 8; }
-  .tile span { font-size: 12px; padding: 22px 10px 8px; }
+  .tile span { font-size: 10px; padding: 22px 10px 8px; }
 
   .sheet {
     position: fixed;
@@ -542,7 +567,8 @@ button:focus-visible {
     height: 90dvh;
     max-height: 90dvh;
     margin: 0;
-    border-radius: 14px 14px 0 0;
+    border-radius: 0;
+    border-top: 1px solid var(--line);
   }
 
   .sheet__bar {

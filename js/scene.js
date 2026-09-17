@@ -4,8 +4,8 @@ import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
 import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 
-const LINE = new THREE.Color("#2a4a78");
-const NODE = new THREE.Color("#3d5c8a");
+const LINE = new THREE.Color("#0f2943");
+const NODE = new THREE.Color("#163e64");
 const ORANGE = new THREE.Color("#c45a14");
 
 function hash(i) {
@@ -205,7 +205,7 @@ export class World {
       new THREE.LineBasicMaterial({
         color: LINE,
         transparent: true,
-        opacity: this.mobile ? 0.32 : 0.38,
+        opacity: this.mobile ? 0.4 : 0.48,
         depthWrite: false
       })
     );

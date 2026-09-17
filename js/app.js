@@ -1,4 +1,4 @@
-import { World } from "./scene.js?v=sx3";
+import { World } from "./scene.js?v=sx4";
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
@@ -73,20 +73,50 @@ function sheets(scene, pager) {
   const body = $("#sheet-body");
   if (!dialog || !body) return;
 
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const overflows = () => body.scrollHeight > body.clientHeight + 1;
   const onHandle = (el) => el.closest?.(".sheet__bar, .sheet__handle");
+  const lockPage = () => document.documentElement.classList.add("is-locked");
+  const unlockPage = () => document.documentElement.classList.remove("is-locked");
 
-  const lockPage = () => {
-    document.documentElement.classList.add("is-locked");
-  };
-
-  const unlockPage = () => {
-    document.documentElement.classList.remove("is-locked");
-  };
+  let closing = false;
+  let closeTimer = 0;
 
   const resetSheet = () => {
-    dialog.classList.remove("is-dragging");
+    dialog.classList.remove("is-dragging", "is-open", "is-closing");
     dialog.style.transform = "";
+  };
+
+  const settle = () => {
+    closing = false;
+    window.clearTimeout(closeTimer);
+    if (dialog.open) dialog.close();
+    else dialog.removeAttribute("open");
+    resetSheet();
+    unlockPage();
+    if (scene) scene.quiet = false;
+    const section = pager?.id() || "";
+    if (section) history.replaceState(null, "", `#${section}`);
+    else history.replaceState(null, "", location.pathname);
+  };
+
+  const close = () => {
+    if (!dialog.open && !dialog.hasAttribute("open")) return;
+    if (reduced) {
+      settle();
+      return;
+    }
+    if (closing) return;
+    closing = true;
+    dialog.classList.remove("is-open", "is-dragging");
+    dialog.classList.add("is-closing");
+    const finish = (event) => {
+      if (event && event.target !== dialog) return;
+      dialog.removeEventListener("transitionend", finish);
+      settle();
+    };
+    dialog.addEventListener("transitionend", finish);
+    closeTimer = window.setTimeout(() => finish({ target: dialog }), 420);
   };
 
   const blockIfNeeded = (event, deltaY) => {
@@ -121,7 +151,7 @@ function sheets(scene, pager) {
   dialog.addEventListener(
     "touchstart",
     (event) => {
-      if (!dialog.open) return;
+      if (!dialog.open || closing) return;
       startY = event.touches[0]?.clientY ?? 0;
       startX = event.touches[0]?.clientX ?? 0;
       lastY = startY;
@@ -136,7 +166,7 @@ function sheets(scene, pager) {
   dialog.addEventListener(
     "touchmove",
     (event) => {
-      if (!dialog.open) return;
+      if (!dialog.open || closing) return;
       const y = event.touches[0]?.clientY ?? 0;
       const x = event.touches[0]?.clientX ?? 0;
       const dy = y - startY;
@@ -165,31 +195,20 @@ function sheets(scene, pager) {
   dialog.addEventListener(
     "touchend",
     () => {
-      if (!dialog.open) return;
+      if (!dialog.open || closing) return;
       const dy = lastY - startY;
       const tapHandle = fromHandle && !dragging && Math.abs(dy) < 12;
       const flick = dragging && (dy > 88 || vel > 0.55);
       dialog.classList.remove("is-dragging");
       if (tapHandle || flick) {
-        dialog.style.transform = "translateY(110%)";
-        window.setTimeout(close, 240);
+        dialog.style.transform = "";
+        close();
         return;
       }
       dialog.style.transform = "";
     },
     { passive: true }
   );
-
-  const close = () => {
-    if (dialog.open) dialog.close();
-    else dialog.removeAttribute("open");
-    resetSheet();
-    unlockPage();
-    if (scene) scene.quiet = false;
-    const section = pager?.id() || "";
-    if (section) history.replaceState(null, "", `#${section}`);
-    else history.replaceState(null, "", location.pathname);
-  };
 
   const open = (id) => {
     const src = document.getElementById(`detail-${id}`);
@@ -199,15 +218,21 @@ function sheets(scene, pager) {
     body.replaceChildren(src.content.cloneNode(true));
     if (scene) scene.quiet = true;
     lockPage();
+    closing = false;
+    window.clearTimeout(closeTimer);
     resetSheet();
     if (typeof dialog.showModal === "function") dialog.showModal();
     else dialog.setAttribute("open", "");
     body.scrollTop = 0;
     history.replaceState(null, "", `#d-${id}`);
-    const focusEl = window.matchMedia("(max-width: 700px)").matches
-      ? dialog.querySelector(".sheet__handle")
-      : dialog.querySelector(".sheet__close");
-    focusEl?.focus({ preventScroll: true });
+    dialog.focus({ preventScroll: true });
+    if (reduced) {
+      dialog.classList.add("is-open");
+      return;
+    }
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => dialog.classList.add("is-open"));
+    });
   };
 
   $$("[data-open]").forEach((btn) => {
@@ -217,7 +242,13 @@ function sheets(scene, pager) {
   dialog.querySelector(".sheet__close")?.addEventListener("click", close);
   dialog.querySelector(".sheet__handle")?.addEventListener("click", close);
   dialog.addEventListener("click", (e) => {
-    if (e.target === dialog) close();
+    const box = dialog.getBoundingClientRect();
+    const inside =
+      e.clientX >= box.left &&
+      e.clientX <= box.right &&
+      e.clientY >= box.top &&
+      e.clientY <= box.bottom;
+    if (!inside) close();
   });
   dialog.addEventListener("cancel", (e) => {
     e.preventDefault();

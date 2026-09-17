@@ -25,6 +25,8 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://nayanarora.github.io/images/og-na.jpg">
   <meta name="theme-color" content="#000000">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; font-src 'self' https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; connect-src 'self' https://cdn.jsdelivr.net;">
   <link rel="apple-touch-icon" sizes="180x180" href="icon_180x180.png">
   <link rel="icon" href="images/mark.svg" type="image/svg+xml">
   <link rel="icon" type="image/png" sizes="32x32" href="icon_32x32.png">
@@ -33,7 +35,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/site.css?v=sx3">
+  <link rel="stylesheet" href="css/site.css?v=sx4">
   <script type="importmap">
     {
       "imports": {
@@ -136,16 +138,16 @@
           <p class="contact-line">nayan.arora.work@gmail.com</p>
           <p><a class="mail" href="mailto:nayan.arora.work@gmail.com">Send email</a></p>
           <p class="links">
-            <a href="https://www.linkedin.com/in/nayanarora">LinkedIn</a>
-            <a href="https://github.com/nayanarora">GitHub</a>
-            <a href="https://orcid.org/0009-0004-6721-7076">ORCID</a>
+            <a href="https://www.linkedin.com/in/nayanarora" rel="noopener noreferrer">LinkedIn</a>
+            <a href="https://github.com/nayanarora" rel="noopener noreferrer">GitHub</a>
+            <a href="https://orcid.org/0009-0004-6721-7076" rel="noopener noreferrer">ORCID</a>
           </p>
         </article>
       </section>
     </div>
   </main>
 
-  <dialog class="sheet" id="sheet">
+  <dialog class="sheet" id="sheet" tabindex="-1">
     <div class="sheet__bar">
       <button class="sheet__handle" type="button" aria-label="Close">
         <i></i>
@@ -208,18 +210,18 @@
       <h2>A long short-term memory model for sub-hourly temporal disaggregation of precipitation</h2>
       <p>SERRA, 2025. Oates, Arora, Oh, Lee. Australia’s historical record is daily at many stations; hydrological and building models need half-hours. We trained an LSTM on temporal structure and correlated weather so daily totals split into half-hourly rain that still conserves mass.</p>
       <p class="gain">What that added: series that keep variance and the count of wet half-hours honest — and, when rolled back to hourly, beat the usual baselines on most metrics.</p>
-      <p><a href="https://doi.org/10.1007/s00477-025-02996-0">doi.org/10.1007/s00477-025-02996-0</a></p>
+      <p><a href="https://doi.org/10.1007/s00477-025-02996-0" rel="noopener noreferrer">doi.org/10.1007/s00477-025-02996-0</a></p>
     </template>
     <template id="detail-apsrc">
       <img src="images/generated/climate-rain.jpg" width="1152" height="864" alt="Rain over forested ranges">
       <h2>Disaggregating daily precipitation, 1990–2022</h2>
       <p>Asia-Pacific Solar Research Conference, Sydney, 2024. The first public cut of the daily-to-half-hourly LSTM, trained across Australian climate zones so solar and hygrothermal models can use a longer record than the half-hourly gauges allow.</p>
       <p class="gain">What that added: a usable half-hourly precipitation history for stations that only ever published a daily total.</p>
-      <p><a href="https://apvi.org.au/solar-research-conference/wp-content/uploads/2025/01/Oates_H_Disaggregating_Daily_Precipitation_Data_1990_to_2022_into_Half-Hourly_Intervals_Using_LSTM_Models.pdf">Conference PDF</a></p>
+      <p><a href="https://apvi.org.au/solar-research-conference/wp-content/uploads/2025/01/Oates_H_Disaggregating_Daily_Precipitation_Data_1990_to_2022_into_Half-Hourly_Intervals_Using_LSTM_Models.pdf" rel="noopener noreferrer">Conference PDF</a></p>
     </template>
   </div>
 
-  <script type="module" src="js/app.js?v=sx3"></script>
+  <script type="module" src="js/app.js?v=sx4"></script>
   <script src="js/seo.js"></script>
 </body>
 </html>

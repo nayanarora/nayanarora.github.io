@@ -57,13 +57,27 @@ html.is-locked .viewport,
 html.is-locked .rail,
 html.is-locked .mark { pointer-events: none; }
 
-a { color: var(--ink); text-decoration: none; }
-a:hover { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
+a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: rgba(245, 245, 245, 0.48);
+  text-underline-offset: 0.22em;
+  text-decoration-skip-ink: auto;
+}
+a:hover {
+  color: #fff;
+  text-decoration-color: #fff;
+}
 img { max-width: 100%; height: auto; display: block; }
 button { font: inherit; color: inherit; outline: none; }
 button:focus-visible {
-  outline: 1px solid var(--heat);
+  outline: 1px solid rgba(245, 245, 245, 0.28);
   outline-offset: 3px;
+}
+.sheet:focus,
+.sheet:focus-visible {
+  outline: none;
 }
 
 .skip {
@@ -402,6 +416,7 @@ button:focus-visible {
   font-size: 12px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
+  text-decoration: none;
 }
 
 .mail:hover {
@@ -426,6 +441,7 @@ button:focus-visible {
   font-size: 11px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
+  text-decoration-color: rgba(245, 245, 245, 0.32);
 }
 
 .sheet {
@@ -440,14 +456,39 @@ button:focus-visible {
   color: var(--ink);
   box-shadow: none;
   overscroll-behavior: contain;
-  transition: transform 0.28s ease;
+  opacity: 0;
+  transform: translate3d(0, 16px, 0) scale(0.96);
+  transition:
+    transform 0.48s cubic-bezier(0.32, 0.72, 0, 1),
+    opacity 0.36s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.sheet.is-open {
+  opacity: 1;
+  transform: none;
+}
+
+.sheet.is-closing {
+  opacity: 0;
+  transform: translate3d(0, 10px, 0) scale(0.98);
+  transition:
+    transform 0.28s cubic-bezier(0.4, 0, 1, 1),
+    opacity 0.22s cubic-bezier(0.4, 0, 1, 1);
 }
 
 .sheet.is-dragging { transition: none; }
 
 .sheet::backdrop {
-  background: rgba(0, 0, 0, 0.55);
+  background: rgba(0, 0, 0, 0.52);
+  opacity: 0;
   overscroll-behavior: none;
+  transition: opacity 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.sheet.is-open::backdrop { opacity: 1; }
+.sheet.is-closing::backdrop {
+  opacity: 0;
+  transition: opacity 0.24s cubic-bezier(0.4, 0, 1, 1);
 }
 
 .sheet__bar {
@@ -489,9 +530,9 @@ button:focus-visible {
 }
 
 .sheet__close:hover { color: #fff; }
-.sheet__close:focus,
 .sheet__close:focus-visible {
-  outline: none;
+  outline: 1px solid rgba(245, 245, 245, 0.22);
+  outline-offset: 2px;
   color: #fff;
 }
 
@@ -521,6 +562,19 @@ button:focus-visible {
 
 .sheet__body .gain {
   color: var(--ink);
+}
+
+.sheet__body a[href^="http"]::after {
+  content: "";
+  display: inline-block;
+  width: 0.38em;
+  height: 0.38em;
+  margin: 0 0 0.12em 0.32em;
+  border-right: 1px solid currentColor;
+  border-top: 1px solid currentColor;
+  transform: rotate(45deg);
+  opacity: 0.7;
+  vertical-align: middle;
 }
 
 .sheet__body img {
@@ -569,6 +623,20 @@ button:focus-visible {
     margin: 0;
     border-radius: 0;
     border-top: 1px solid var(--line);
+    opacity: 1;
+    transform: translate3d(0, 100%, 0);
+    transition: transform 0.52s cubic-bezier(0.32, 0.72, 0, 1);
+  }
+
+  .sheet.is-open {
+    opacity: 1;
+    transform: none;
+  }
+
+  .sheet.is-closing {
+    opacity: 1;
+    transform: translate3d(0, 110%, 0);
+    transition: transform 0.38s cubic-bezier(0.4, 0, 1, 1);
   }
 
   .sheet__bar {
@@ -609,11 +677,19 @@ button:focus-visible {
 @media (prefers-reduced-motion: reduce) {
   .tile,
   .panel,
-  .rail button {
+  .rail button,
+  .sheet,
+  .sheet::backdrop {
     opacity: 1;
     transition: none;
     pointer-events: auto;
   }
   .tile { transform: none; }
   .track { transition: none !important; }
+  .sheet,
+  .sheet.is-open,
+  .sheet.is-closing {
+    transform: none;
+    opacity: 1;
+  }
 }
